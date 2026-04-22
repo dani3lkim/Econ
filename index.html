@@ -1227,6 +1227,205 @@
   .pe-insight-desc strong { color: var(--text); }
   .pe-insight-desc em { color: var(--teal); font-style: normal; }
 
+  /* ══════════════════════════════
+     BOOK SPREAD — POOR ECONOMICS
+  ══════════════════════════════ */
+  #poor-economics {
+    background: rgba(8,15,28,0.5);
+    backdrop-filter: blur(4px);
+    gap: 0;
+  }
+
+  .book-spread {
+    display: flex;
+    max-width: 960px;
+    width: 100%;
+    min-height: 480px;
+    border-radius: 3px 14px 14px 3px;
+    box-shadow:
+      -6px 0 18px rgba(0,0,0,0.6),
+      0 12px 50px rgba(0,0,0,0.7),
+      0 2px 8px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .book-shadow-left {
+    width: 18px;
+    flex-shrink: 0;
+    background: linear-gradient(to right, #1a0f05, #3d2510);
+    border-radius: 3px 0 0 3px;
+  }
+
+  .book-page {
+    flex: 1;
+    padding: 40px 38px 32px;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #2a1a0a;
+    position: relative;
+    background:
+      repeating-linear-gradient(
+        transparent, transparent 31px,
+        rgba(180,150,100,0.08) 31px, rgba(180,150,100,0.08) 32px
+      ),
+      linear-gradient(135deg, #fdf3dc 0%, #f5e8c4 50%, #efe0b8 100%);
+  }
+
+  .book-page-left {
+    background:
+      repeating-linear-gradient(
+        transparent, transparent 31px,
+        rgba(180,150,100,0.08) 31px, rgba(180,150,100,0.08) 32px
+      ),
+      linear-gradient(to right, #e8d8a8, #f5e8c4 30%, #fdf3dc 100%);
+  }
+
+  .book-page-right {
+    border-radius: 0 14px 14px 0;
+    background:
+      repeating-linear-gradient(
+        transparent, transparent 31px,
+        rgba(180,150,100,0.08) 31px, rgba(180,150,100,0.08) 32px
+      ),
+      linear-gradient(to left, #e8d8a8, #f5e8c4 30%, #fdf3dc 100%);
+  }
+
+  .book-spine-center {
+    width: 14px;
+    flex-shrink: 0;
+    background: linear-gradient(to right,
+      rgba(0,0,0,0.25),
+      rgba(255,220,140,0.15) 40%,
+      rgba(255,220,140,0.15) 60%,
+      rgba(0,0,0,0.2)
+    );
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  }
+
+  .book-shadow-right {
+    width: 6px;
+    flex-shrink: 0;
+    background: linear-gradient(to left, #2a1508, #5c3418);
+    border-radius: 0 14px 14px 0;
+  }
+
+  .book-chapter-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #8b6030;
+    border-bottom: 1px solid rgba(139,96,48,0.35);
+    padding-bottom: 10px;
+    margin-bottom: 22px;
+  }
+
+  .book-title-text {
+    font-size: 46px;
+    font-weight: 900;
+    color: #1a0d04;
+    line-height: 1;
+    margin-bottom: 12px;
+    letter-spacing: -1px;
+  }
+
+  .book-subtitle {
+    font-size: 12px;
+    color: #6b4a20;
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+
+  .book-divider {
+    text-align: center;
+    color: #a07840;
+    font-size: 13px;
+    letter-spacing: 4px;
+    margin: 12px 0;
+  }
+
+  .book-authors {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2a1a0a;
+    margin-bottom: 4px;
+  }
+
+  .book-award {
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #8b6030;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .book-quote {
+    font-size: 13px;
+    font-style: italic;
+    color: #3d2510;
+    line-height: 1.75;
+    border-left: 3px solid #c8a060;
+    padding-left: 14px;
+    margin: 0;
+  }
+
+  .book-page-num {
+    position: absolute;
+    bottom: 20px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 11px;
+    color: #a07840;
+    letter-spacing: 3px;
+  }
+
+  .book-section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a0d04;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(139,96,48,0.3);
+    font-style: italic;
+  }
+
+  .book-insight {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 18px;
+    align-items: flex-start;
+  }
+
+  .book-insight-num {
+    font-size: 16px;
+    font-weight: 700;
+    color: #8b6030;
+    width: 24px;
+    flex-shrink: 0;
+    padding-top: 1px;
+    font-style: italic;
+  }
+
+  .book-insight-head {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a0d04;
+    margin-bottom: 4px;
+  }
+
+  .book-insight-body {
+    font-size: 12px;
+    color: #4a3018;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  @media (max-width: 700px) {
+    .book-spread { flex-direction: column; border-radius: 8px; }
+    .book-shadow-left, .book-shadow-right, .book-spine-center { display: none; }
+    .book-page-right { border-radius: 0 0 8px 8px; }
+  }
+
   @media print {
     #navDots, #timer { display: none !important; }
     html { scroll-snap-type: none !important; }
@@ -1444,30 +1643,62 @@
   <span class="section-label">Literature Connection</span>
   <span class="page-num">06 / 08</span>
 
-  <h2 class="section-title"><span style="color:var(--gold);font-style:italic;">Poor Economics</span> &amp; <span>AI</span></h2>
+  <div class="book-spread">
+    <!-- Spine shadow (left edge) -->
+    <div class="book-shadow-left"></div>
 
-  <blockquote class="pe-quote" style="max-width:700px;text-align:center;border-left:none;border-top:2px solid rgba(255,183,3,0.3);border-bottom:2px solid rgba(255,183,3,0.3);padding:16px 24px;">
-    "The poor are not poor because they are lazy or irrational — they are poor because they face a different set of constraints."
-    <cite>— Banerjee &amp; Duflo, <em>Poor Economics</em> (Nobel Prize in Economics, 2019)</cite>
-  </blockquote>
+    <!-- Left page -->
+    <div class="book-page book-page-left">
+      <div class="book-chapter-label">Chapter VI &nbsp;·&nbsp; Required Reading</div>
+      <div class="book-title-text">Poor<br>Economics</div>
+      <div class="book-subtitle">A Radical Rethinking of the<br>Way to Fight Global Poverty</div>
+      <div class="book-divider">— ◆ —</div>
+      <div class="book-authors">Abhijit V. Banerjee &amp; Esther Duflo</div>
+      <div class="book-award">Nobel Prize in Economics · 2019</div>
+      <div class="book-divider" style="margin:18px 0 16px;"></div>
+      <blockquote class="book-quote">
+        "The poor are not poor because they are lazy or irrational — they are poor because they face a different set of constraints."
+      </blockquote>
+      <div class="book-page-num">— 6 —</div>
+    </div>
 
-  <div class="takeaway-grid" style="max-width:1000px;">
-    <div class="takeaway-card">
-      <div class="takeaway-num" style="color:rgba(230,57,70,0.2);">01</div>
-      <div class="takeaway-text"><strong style="color:var(--red);">Poverty Traps</strong> — AI job displacement creates the same cycle: once workers lose income, they lose access to credit, healthcare, and retraining. Recovery becomes nearly impossible without help.</div>
-    </div>
-    <div class="takeaway-card">
-      <div class="takeaway-num" style="color:rgba(255,183,3,0.2);">02</div>
-      <div class="takeaway-text"><strong style="color:var(--gold);">The Informal Economy</strong> — 2 billion workers in informal jobs are last to benefit from AI but first to absorb the ripple effects when formal workers flood their markets.</div>
-    </div>
-    <div class="takeaway-card">
-      <div class="takeaway-num" style="color:rgba(0,180,216,0.2);">03</div>
-      <div class="takeaway-text"><strong style="color:var(--teal);">What Actually Works</strong> — Banerjee &amp; Duflo found targeted, specific interventions beat broad policy. AI reskilling must be precise — the right skills, for the right people, at the right time.</div>
-    </div>
-  </div>
+    <!-- Spine -->
+    <div class="book-spine-center"></div>
 
-  <div class="chart-callout" style="max-width:900px;">
-    <strong>The connection:</strong> AI disruption and global poverty follow the same logic — vulnerability is systemic. Without targeted policy, AI will widen the gap rather than close it.
+    <!-- Right page -->
+    <div class="book-page book-page-right">
+      <div class="book-chapter-label">Applied to AI &amp; Labor Markets</div>
+      <div class="book-section-title">Three Lessons for the AI Age</div>
+
+      <div class="book-insight">
+        <div class="book-insight-num">I.</div>
+        <div>
+          <div class="book-insight-head">Poverty Traps &amp; AI Displacement</div>
+          <p class="book-insight-body">Once workers lose income to automation, they lose access to credit, healthcare, and retraining simultaneously. Recovery becomes structurally impossible without intervention — the same poverty trap Banerjee &amp; Duflo documented in the developing world.</p>
+        </div>
+      </div>
+
+      <div class="book-insight">
+        <div class="book-insight-num">II.</div>
+        <div>
+          <div class="book-insight-head">The Invisible Informal Economy</div>
+          <p class="book-insight-body">Two billion workers in informal jobs — vendors, laborers, farmers — are last to benefit from AI tools but first to absorb its ripple effects when displaced formal workers flood their markets.</p>
+        </div>
+      </div>
+
+      <div class="book-insight">
+        <div class="book-insight-num">III.</div>
+        <div>
+          <div class="book-insight-head">Targeted Intervention Beats Broad Policy</div>
+          <p class="book-insight-body">RCT evidence shows that micro-targeted interventions — the right skills, for the right people, at the right moment — outperform sweeping reskilling programs. The same principle must guide AI workforce policy.</p>
+        </div>
+      </div>
+
+      <div class="book-page-num">— 7 —</div>
+    </div>
+
+    <!-- Spine shadow (right edge) -->
+    <div class="book-shadow-right"></div>
   </div>
 </section>
 
