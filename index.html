@@ -1,0 +1,3146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI's Impact on Global Labor Markets & Wages</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0D1B2A;
+    --navy-light: #132338;
+    --navy-mid: #1a2d45;
+    --teal: #00B4D8;
+    --teal-dim: #0096b4;
+    --gold: #FFB703;
+    --red: #E63946;
+    --green: #2DC653;
+    --text: #E8F1F2;
+    --text-dim: #8BAAB8;
+  }
+
+  html {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+  }
+
+  section {
+    min-height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Section Labels ── */
+  .section-label {
+    position: absolute;
+    top: 24px;
+    left: 40px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--teal);
+    opacity: 0.7;
+  }
+
+  .page-num {
+    position: absolute;
+    top: 24px;
+    right: 40px;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  /* ══════════════════════════════
+     SECTION 1 — HERO
+  ══════════════════════════════ */
+  #hero {
+    background: transparent;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .hero-eyebrow {
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--teal);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-title {
+    font-size: clamp(28px, 4.5vw, 58px);
+    font-weight: 800;
+    line-height: 1.1;
+    max-width: 900px;
+    background: linear-gradient(135deg, #fff 30%, var(--teal) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.4s forwards;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(13px, 1.6vw, 18px);
+    color: var(--text-dim);
+    max-width: 680px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.7s forwards;
+  }
+
+  .hero-subtitle span {
+    color: var(--gold);
+  }
+
+  .hero-author {
+    margin-top: 16px;
+    font-size: 15px;
+    color: var(--text-dim);
+    opacity: 0;
+    animation: fadeUp 0.9s ease 1s forwards;
+  }
+
+  .hero-author strong {
+    color: var(--text);
+  }
+
+  .hero-divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+    border-radius: 2px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.6s forwards;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-dim);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeIn 1s ease 1.6s forwards;
+  }
+
+  .scroll-arrow {
+    width: 18px;
+    height: 18px;
+    border-right: 2px solid var(--teal);
+    border-bottom: 2px solid var(--teal);
+    transform: rotate(45deg);
+    animation: bounce 1.4s ease infinite;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50%       { transform: rotate(45deg) translateY(6px); }
+  }
+
+  /* ══════════════════════════════
+     SECTION 2 — BIG NUMBERS
+  ══════════════════════════════ */
+  #stats {
+    background: rgba(13,27,42,0.55);
+    backdrop-filter: blur(4px);
+    gap: 40px;
+  }
+
+  .section-title {
+    font-size: clamp(22px, 3vw, 36px);
+    font-weight: 700;
+    text-align: center;
+    color: var(--text);
+  }
+
+  .section-title span {
+    color: var(--teal);
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .stat-card {
+    background: var(--navy-mid);
+    border: 1px solid rgba(0,180,216,0.15);
+    border-radius: 16px;
+    padding: 36px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0,180,216,0.4);
+  }
+
+  .stat-info-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.06);
+    color: var(--text-dim);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+    font-family: inherit;
+    line-height: 1;
+    z-index: 2;
+  }
+
+  .stat-info-btn:hover {
+    background: rgba(0,180,216,0.15);
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+
+  .stat-card.context-open .stat-info-btn {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: var(--navy);
+    transform: rotate(45deg);
+  }
+
+  .stat-context {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+    opacity: 0;
+    text-align: left;
+    margin-top: 0;
+  }
+
+  .stat-card.context-open .stat-context {
+    max-height: 220px;
+    opacity: 1;
+    margin-top: 14px;
+  }
+
+  .stat-context-inner {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 12px;
+  }
+
+  .stat-context-inner p {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+
+  .stat-context-inner p:last-child { margin-bottom: 0; }
+
+  .driver-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .driver-bar-label { width: 110px; flex-shrink: 0; }
+
+  .driver-bar-track {
+    flex: 1;
+    height: 5px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .driver-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  .driver-bar-pct {
+    width: 30px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .stat-card.context-open .stat-number,
+  .stat-card.context-open .stat-label {
+    opacity: 0.45;
+    transition: opacity 0.3s ease;
+  }
+
+  .stat-number {
+    font-size: clamp(36px, 5vw, 58px);
+    font-weight: 800;
+    color: var(--teal);
+    line-height: 1;
+    margin-bottom: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-number.gold { color: var(--gold); }
+  .stat-number.red  { color: var(--red); }
+  .stat-number.green { color: var(--green); }
+
+  .stat-label {
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .stat-source {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+
+  /* ══════════════════════════════
+     SECTION 3 — ADOPTION GAP
+  ══════════════════════════════ */
+  #adoption {
+    background: rgba(13,27,42,0.5);
+    backdrop-filter: blur(4px);
+    gap: 32px;
+  }
+
+  .chart-container {
+    width: 100%;
+    max-width: 900px;
+    background: var(--navy-mid);
+    border: 1px solid rgba(0,180,216,0.12);
+    border-radius: 16px;
+    padding: 32px;
+  }
+
+  .chart-callout {
+    background: rgba(0,180,216,0.08);
+    border-left: 3px solid var(--teal);
+    padding: 12px 18px;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: var(--text-dim);
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .chart-callout strong { color: var(--teal); }
+
+  .chart-source {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: right;
+    margin-top: 8px;
+  }
+
+  /* ══════════════════════════════
+     SECTION 4 — DISPLACEMENT
+  ══════════════════════════════ */
+  #displacement {
+    background: rgba(13,27,42,0.55);
+    backdrop-filter: blur(4px);
+    gap: 32px;
+  }
+
+  .dual-chart {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 24px;
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  @media (max-width: 800px) {
+    .dual-chart { grid-template-columns: 1fr; }
+  }
+
+  /* ══════════════════════════════
+     SECTION 5 — WHO BEARS RISK
+  ══════════════════════════════ */
+  #risk {
+    background: rgba(13,27,42,0.5);
+    backdrop-filter: blur(4px);
+    gap: 36px;
+  }
+
+  .risk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  @media (max-width: 700px) {
+    .risk-grid { grid-template-columns: 1fr; }
+  }
+
+  .risk-column h3 {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid currentColor;
+  }
+
+  .risk-column.exposed h3 { color: var(--red); border-color: var(--red); }
+  .risk-column.safe h3    { color: var(--green); border-color: var(--green); }
+
+  .risk-card {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .risk-card strong { display: block; font-size: 15px; margin-bottom: 3px; }
+  .risk-card.red-card  { background: rgba(230,57,70,0.1); border: 1px solid rgba(230,57,70,0.25); }
+  .risk-card.green-card{ background: rgba(45,198,83,0.1); border: 1px solid rgba(45,198,83,0.25); }
+
+  .risk-card.red-card strong   { color: var(--red); }
+  .risk-card.green-card strong { color: var(--green); }
+
+  .risk-source {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: center;
+    max-width: 1100px;
+    width: 100%;
+  }
+
+  /* ══════════════════════════════
+     SECTION 6 — WAGE INEQUALITY
+  ══════════════════════════════ */
+
+  /* ══════════════════════════════
+     SECTION 7 — TAKEAWAYS
+  ══════════════════════════════ */
+  #takeaways {
+    background: rgba(13,27,42,0.5);
+    backdrop-filter: blur(4px);
+    gap: 40px;
+  }
+
+  .takeaway-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .takeaway-card {
+    background: var(--navy-mid);
+    border: 1px solid rgba(255,183,3,0.2);
+    border-radius: 14px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .takeaway-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--gold);
+  }
+
+  .takeaway-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255,183,3,0.4);
+  }
+
+  .takeaway-num {
+    font-size: 36px;
+    font-weight: 800;
+    color: rgba(255,183,3,0.15);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .takeaway-text {
+    font-size: clamp(15px, 1.6vw, 18px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  /* ══════════════════════════════
+     SECTION 8 — SOURCES
+  ══════════════════════════════ */
+  #sources {
+    background: rgba(13,27,42,0.5);
+    backdrop-filter: blur(4px);
+    gap: 28px;
+    min-height: auto;
+    padding: 60px 40px;
+    scroll-snap-align: start;
+  }
+
+  .sources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .source-card {
+    background: var(--navy-mid);
+    border: 1px solid rgba(0,180,216,0.1);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+
+  .source-card .source-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: rgba(0,180,216,0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .source-card p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .source-card a {
+    color: var(--teal);
+    font-size: 11px;
+    word-break: break-all;
+    text-decoration: none;
+  }
+
+  .source-card a:hover { text-decoration: underline; }
+  .source-card strong { color: var(--text); }
+
+  /* ── Utility ── */
+  .canvas-wrap { position: relative; width: 100%; }
+
+  /* ══════════════════════════════
+     SECTION 8 — JOB SEARCH
+  ══════════════════════════════ */
+  #job-search {
+    background: rgba(13,27,42,0.5);
+    backdrop-filter: blur(4px);
+    gap: 28px;
+  }
+
+  .search-wrap {
+    width: 100%;
+    max-width: 700px;
+    position: relative;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: var(--navy-mid);
+    border: 1.5px solid rgba(0,180,216,0.3);
+    border-radius: 12px;
+    padding: 6px 6px 6px 16px;
+    gap: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .search-box:focus-within {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(0,180,216,0.1);
+  }
+
+  .search-box svg { flex-shrink: 0; color: var(--text-dim); }
+
+  .search-box input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-size: 16px;
+    font-family: inherit;
+  }
+
+  .search-box input::placeholder { color: var(--text-dim); }
+
+  .search-btn {
+    background: var(--teal);
+    color: var(--navy);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+  }
+
+  .search-btn:hover { background: #00c8f0; transform: translateY(-1px); }
+
+  .job-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .job-chip {
+    background: rgba(0,180,216,0.07);
+    border: 1px solid rgba(0,180,216,0.2);
+    color: var(--text-dim);
+    font-size: 12px;
+    padding: 5px 13px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .job-chip:hover {
+    background: rgba(0,180,216,0.18);
+    border-color: var(--teal);
+    color: var(--text);
+  }
+
+  .search-dropdown {
+    position: absolute;
+    top: 52px;
+    left: 0;
+    right: 0;
+    background: var(--navy-mid);
+    border: 1px solid rgba(0,180,216,0.25);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    z-index: 100;
+    display: none;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
+  .dropdown-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .dropdown-item:last-child { border-bottom: none; }
+  .dropdown-item:hover { background: rgba(0,180,216,0.1); color: var(--text); }
+
+  .dropdown-item .cat-tag {
+    font-size: 11px;
+    background: rgba(0,180,216,0.1);
+    color: var(--teal);
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+
+  .job-result {
+    width: 100%;
+    max-width: 1000px;
+    background: var(--navy-mid);
+    border: 1px solid rgba(0,180,216,0.15);
+    border-radius: 18px;
+    overflow: hidden;
+    animation: resultIn 0.4s ease;
+  }
+
+  @keyframes resultIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-header {
+    padding: 24px 28px;
+    background: rgba(0,180,216,0.04);
+    border-bottom: 1px solid rgba(0,180,216,0.1);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .result-title-block h3 { font-size: 24px; font-weight: 800; color: var(--text); }
+  .result-title-block .meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+
+  .badge {
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .badge-cat      { background: rgba(0,180,216,0.12);  color: var(--teal); }
+  .badge-positive { background: rgba(45,198,83,0.12);  color: var(--green); }
+  .badge-negative { background: rgba(230,57,70,0.12);  color: var(--red); }
+  .badge-mixed    { background: rgba(255,183,3,0.12);  color: var(--gold); }
+
+  .result-headline {
+    font-size: 14px;
+    color: var(--text-dim);
+    max-width: 600px;
+    line-height: 1.55;
+    margin-top: 10px;
+  }
+
+  .risk-meter-wrap { text-align: right; min-width: 140px; }
+
+  .risk-meter-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .risk-meter-value { font-size: 44px; font-weight: 800; line-height: 1; }
+
+  .risk-bar-track {
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    margin-top: 8px;
+    width: 140px;
+    overflow: hidden;
+  }
+
+  .risk-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    width: 0;
+    transition: width 0.9s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .result-body {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+  }
+
+  @media (max-width: 720px) { .result-body { grid-template-columns: 1fr; } }
+
+  .result-radar {
+    padding: 20px 16px;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .result-radar p { font-size: 11px; color: var(--text-dim); text-align: center; letter-spacing: 0.5px; }
+
+  .result-lists {
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 720px) { .result-lists { grid-template-columns: 1fr; } }
+
+  .result-list h4 {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid currentColor;
+  }
+
+  .result-list.auto  h4 { color: var(--red); }
+  .result-list.aug   h4 { color: var(--teal); }
+  .result-list.skill h4 { color: var(--gold); }
+
+  .result-list ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+
+  .result-list ul li {
+    font-size: 13px;
+    color: var(--text-dim);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.4;
+  }
+
+  .result-list.auto  ul li::before { content: '–'; position: absolute; left: 0; color: var(--red); }
+  .result-list.aug   ul li::before { content: '+'; position: absolute; left: 0; color: var(--teal); }
+  .result-list.skill ul li::before { content: '→'; position: absolute; left: 0; color: var(--gold); }
+
+  .result-footer {
+    padding: 12px 24px;
+    background: rgba(0,0,0,0.15);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .result-footer strong { color: var(--text); }
+
+  .no-result {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-dim);
+    font-size: 15px;
+  }
+
+  /* ══════════════════════════════
+     COOLNESS PACK
+  ══════════════════════════════ */
+
+  /* Full-page neural background */
+  #bgCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+
+  /* Reveal animations */
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .reveal.revealed { opacity: 1; transform: translateY(0); }
+
+  /* Nav dots */
+  #navDots {
+    position: fixed;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+  }
+  .nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    border: 1.5px solid rgba(255,255,255,0.28);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s, border-color 0.2s;
+    position: relative;
+  }
+  .nav-dot:hover, .nav-dot.active {
+    background: var(--teal);
+    border-color: var(--teal);
+    transform: scale(1.45);
+  }
+  .nav-dot::after {
+    content: attr(data-label);
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(13,27,42,0.95);
+    color: var(--text);
+    font-size: 11px;
+    white-space: nowrap;
+    padding: 4px 10px;
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    border: 1px solid rgba(0,180,216,0.2);
+  }
+  .nav-dot:hover::after { opacity: 1; }
+
+  /* Timer */
+  #timer {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    background: rgba(13,27,42,0.92);
+    border: 1px solid rgba(0,180,216,0.25);
+    border-radius: 14px;
+    padding: 12px 16px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    backdrop-filter: blur(8px);
+    min-width: 120px;
+  }
+  #timerLabel {
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  #timerDisplay {
+    font-size: 26px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--teal);
+    letter-spacing: 2px;
+    line-height: 1;
+    transition: color 0.3s;
+  }
+  #timerDisplay.warn   { color: var(--gold); }
+  #timerDisplay.urgent { color: var(--red); }
+  .timer-btns { display: flex; gap: 6px; }
+  .timer-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text-dim);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, color 0.15s;
+  }
+  .timer-btn:hover { background: rgba(0,180,216,0.15); color: var(--teal); border-color: var(--teal); }
+
+
+  /* Typewriter cursor */
+  .tw-cursor {
+    display: inline-block;
+    width: 3px;
+    height: 0.85em;
+    background: var(--teal);
+    margin-left: 3px;
+    vertical-align: middle;
+    animation: twblink 0.85s ease infinite;
+  }
+  @keyframes twblink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  /* World map canvas */
+  #worldMapCanvas {
+    width: 100%;
+    max-width: 900px;
+    height: 220px;
+    border-radius: 12px;
+    display: block;
+  }
+
+  /* Year slider */
+  .year-slider-wrap {
+    padding: 16px 24px 18px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    background: rgba(0,0,0,0.12);
+  }
+  .year-slider-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .year-slider-header strong { color: var(--teal); font-size: 16px; font-variant-numeric: tabular-nums; }
+  .year-slider-header span { letter-spacing: 1px; text-transform: uppercase; font-size: 10px; }
+  input[type=range].year-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.1);
+    outline: none;
+    cursor: pointer;
+    margin-bottom: 14px;
+  }
+  input[type=range].year-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--teal);
+    box-shadow: 0 0 8px rgba(0,180,216,0.6);
+    cursor: pointer;
+  }
+  .year-phases {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  @media (max-width: 700px) { .year-phases { grid-template-columns: 1fr 1fr; } }
+  .year-phase {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    padding: 10px 12px;
+    transition: border-color 0.25s, background 0.25s;
+    cursor: default;
+  }
+  .year-phase.active {
+    border-color: var(--teal);
+    background: rgba(0,180,216,0.07);
+  }
+  .year-phase-years {
+    font-size: 10px;
+    color: var(--teal);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+  .year-phase-title {
+    font-size: 12px;
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .year-phase-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  @media print {
+    #navDots, #timer { display: none !important; }
+    html { scroll-snap-type: none !important; }
+    section { min-height: auto; page-break-after: always; }
+    #bgCanvas, #worldMapCanvas { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Full-page neural background -->
+<canvas id="bgCanvas"></canvas>
+
+<!-- ══ 1. HERO ══ -->
+<section id="hero">
+  <span class="section-label">Presentation</span>
+  <span class="page-num">01 / 08</span>
+
+  <p class="hero-eyebrow">Global Economics · Technology Policy</p>
+  <h1 class="hero-title" id="heroTitle">AI's Impact on Global Labor Markets &amp; Wages</h1>
+  <div class="hero-divider"></div>
+  <p class="hero-subtitle">
+    A synthesis of <span>OECD · IMF · ILO · WEF · Microsoft</span> research
+  </p>
+  <p class="hero-author"><strong>Daniel Kim</strong> &nbsp;·&nbsp; April 2026</p>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ══ 2. BIG NUMBERS ══ -->
+<section id="stats">
+  <span class="section-label">The Scale</span>
+  <span class="page-num">02 / 08</span>
+
+  <h2 class="section-title">The <span>Big Numbers</span></h2>
+
+  <div class="stat-grid">
+
+    <div class="stat-card" data-count="1in6">
+      <button class="stat-info-btn" title="What drives this?">i</button>
+      <div class="stat-number teal" id="c1">1 in 6</div>
+      <div class="stat-label">People worldwide use generative AI</div>
+      <div class="stat-source">Microsoft AI Economy Institute, H2 2025</div>
+      <div class="stat-context">
+        <div class="stat-context-inner">
+          <p><strong style="color:var(--teal)">Yes — 100% AI-specific.</strong> This figure measures weekly active generative AI users globally and is entirely attributable to AI adoption, not broader tech trends.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-card" data-count="170">
+      <button class="stat-info-btn" title="What drives this?">i</button>
+      <div class="stat-number green" id="c2">0M</div>
+      <div class="stat-label">New jobs projected by 2030</div>
+      <div class="stat-source">WEF Future of Jobs Report 2025</div>
+      <div class="stat-context">
+        <div class="stat-context-inner">
+          <p><strong style="color:var(--gold)">Partially AI-driven.</strong> The WEF cites five co-equal macro forces:</p>
+          <div class="driver-bar"><span class="driver-bar-label">Green transition</span><div class="driver-bar-track"><div class="driver-bar-fill" style="width:35%;background:var(--green);"></div></div><span class="driver-bar-pct">~35%</span></div>
+          <div class="driver-bar"><span class="driver-bar-label">AI & technology</span><div class="driver-bar-track"><div class="driver-bar-fill" style="width:30%;background:var(--teal);"></div></div><span class="driver-bar-pct">~30%</span></div>
+          <div class="driver-bar"><span class="driver-bar-label">Demographics</span><div class="driver-bar-track"><div class="driver-bar-fill" style="width:20%;background:var(--gold);"></div></div><span class="driver-bar-pct">~20%</span></div>
+          <div class="driver-bar"><span class="driver-bar-label">Reshoring & trade</span><div class="driver-bar-track"><div class="driver-bar-fill" style="width:15%;background:rgba(255,255,255,0.3);"></div></div><span class="driver-bar-pct">~15%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-card" data-count="92">
+      <button class="stat-info-btn" title="What drives this?">i</button>
+      <div class="stat-number red" id="c3">0M</div>
+      <div class="stat-label">Jobs displaced by 2030</div>
+      <div class="stat-source">WEF Future of Jobs Report 2025</div>
+      <div class="stat-context">
+        <div class="stat-context-inner">
+          <p><strong style="color:var(--gold)">Primarily AI & automation, but not exclusively.</strong> AI is the largest displacement driver, but offshoring, cost pressures, and economic restructuring also contribute.</p>
+          <div class="driver-bar"><span class="driver-bar-label">AI & automation</span><div class="driver-bar-track"><div class="driver-bar-fill" style="width:60%;background:var(--red);"></div></div><span class="driver-bar-pct">~60%</span></div>
+          <div class="driver-bar"><span class="driver-bar-label">Economic shifts</span><div class="driver-bar-track"><div class="driver-bar-fill" style="width:25%;background:var(--gold);"></div></div><span class="driver-bar-pct">~25%</span></div>
+          <div class="driver-bar"><span class="driver-bar-label">Other forces</span><div class="driver-bar-track"><div class="driver-bar-fill" style="width:15%;background:rgba(255,255,255,0.3);"></div></div><span class="driver-bar-pct">~15%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-card" data-count="39">
+      <button class="stat-info-btn" title="What drives this?">i</button>
+      <div class="stat-number gold" id="c4">0%</div>
+      <div class="stat-label">Of key job skills will change by 2030</div>
+      <div class="stat-source">WEF Future of Jobs Report 2025</div>
+      <div class="stat-context">
+        <div class="stat-context-inner">
+          <p><strong style="color:var(--gold)">Multi-force driver.</strong> AI is the single largest factor, but the green transition, geoeconomic fragmentation, and demographic shifts all reshape required skills.</p>
+          <div class="driver-bar"><span class="driver-bar-label">AI & technology</span><div class="driver-bar-track"><div class="driver-bar-fill" style="width:45%;background:var(--teal);"></div></div><span class="driver-bar-pct">~45%</span></div>
+          <div class="driver-bar"><span class="driver-bar-label">Green transition</span><div class="driver-bar-track"><div class="driver-bar-fill" style="width:30%;background:var(--green);"></div></div><span class="driver-bar-pct">~30%</span></div>
+          <div class="driver-bar"><span class="driver-bar-label">Geoecon. & other</span><div class="driver-bar-track"><div class="driver-bar-fill" style="width:25%;background:var(--gold);"></div></div><span class="driver-bar-pct">~25%</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ 3. ADOPTION GAP ══ -->
+<section id="adoption">
+  <span class="section-label">Global Divide</span>
+  <span class="page-num">03 / 08</span>
+
+  <h2 class="section-title">Global Adoption <span>Gap</span></h2>
+
+  <div class="chart-container">
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;font-size:12px;">
+      <span style="display:flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:3px;background:#00B4D8;display:inline-block;"></span>Leading economies</span>
+      <span style="display:flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:3px;background:rgba(0,180,216,0.5);display:inline-block;"></span>Global North</span>
+      <span style="display:flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:3px;background:#FFB703;display:inline-block;"></span>Rapidly rising</span>
+      <span style="display:flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:3px;background:#E63946;display:inline-block;"></span>Global South</span>
+    </div>
+    <div class="canvas-wrap" style="height:360px;">
+      <canvas id="adoptionChart"></canvas>
+    </div>
+    <div class="chart-source">Source: Microsoft AI Economy Institute, H2 2025</div>
+  </div>
+
+  <div class="chart-callout">
+    <strong>Key finding:</strong> The gap between Global North and Global South <strong>widened in 2025</strong>. High-adoption economies are pulling further ahead in AI-complementary productivity gains.
+  </div>
+
+  <canvas id="worldMapCanvas"></canvas>
+</section>
+
+<!-- ══ 4. DISPLACEMENT VS CREATION ══ -->
+<section id="displacement">
+  <span class="section-label">Jobs Outlook</span>
+  <span class="page-num">04 / 08</span>
+
+  <h2 class="section-title">Displacement <span>vs.</span> Creation</h2>
+
+  <div class="dual-chart">
+    <div class="chart-container" style="padding:24px;">
+      <p style="font-size:13px;color:var(--text-dim);text-align:center;margin-bottom:12px;">Net Jobs Outcome by 2030 (millions)</p>
+      <div class="canvas-wrap" style="height:260px;">
+        <canvas id="doughnutChart"></canvas>
+      </div>
+      <div style="display:flex;justify-content:center;gap:16px;margin-top:12px;font-size:12px;">
+        <span><span style="color:var(--green)">●</span> Created 170M</span>
+        <span><span style="color:var(--red)">●</span> Displaced 92M</span>
+        <span><span style="color:var(--gold)">●</span> Net +78M</span>
+      </div>
+    </div>
+    <div class="chart-container" style="padding:24px;">
+      <p style="font-size:13px;color:var(--text-dim);text-align:center;margin-bottom:12px;">Fastest-Growing vs. Fastest-Declining Skill Categories</p>
+      <div class="canvas-wrap" style="height:260px;">
+        <canvas id="skillsChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-source" style="max-width:1100px;width:100%;text-align:right;color:var(--text-dim);font-size:11px;">
+    Source: WEF Future of Jobs Report 2025
+  </div>
+</section>
+
+<!-- ══ 5. WHO BEARS THE RISK ══ -->
+<section id="risk">
+  <span class="section-label">Equity &amp; Exposure</span>
+  <span class="page-num">05 / 08</span>
+
+  <h2 class="section-title">Who Bears <span>the Risk</span></h2>
+
+  <div class="risk-grid">
+    <div class="risk-column exposed">
+      <h3>Higher Exposure</h3>
+      <div class="risk-card red-card">
+        <strong>Clerical &amp; Administrative Workers</strong>
+        Data entry, scheduling, bookkeeping — highest automation overlap
+      </div>
+      <div class="risk-card red-card">
+        <strong>Women (2× more exposed than men)</strong>
+        Concentrated in white-collar clerical roles most susceptible to LLM automation
+      </div>
+      <div class="risk-card red-card">
+        <strong>Low-income country workers</strong>
+        Only 0.4% AI exposure vs. 5.5% in high-income countries — but limited safety nets
+      </div>
+      <div class="risk-card red-card">
+        <strong>Younger workers (&lt;35)</strong>
+        Entry-level roles most at risk; career ladders being compressed
+      </div>
+    </div>
+    <div class="risk-column safe">
+      <h3>Better Positioned</h3>
+      <div class="risk-card green-card">
+        <strong>Managers &amp; Senior Professionals</strong>
+        AI as productivity multiplier; strategic judgment remains scarce
+      </div>
+      <div class="risk-card green-card">
+        <strong>High-income / capital-owning workers</strong>
+        Complementarity effect: AI amplifies existing skill premiums + capital gains
+      </div>
+      <div class="risk-card green-card">
+        <strong>Workers in digitally advanced economies</strong>
+        Institutional readiness, retraining infrastructure, and AI-complementary industries
+      </div>
+      <div class="risk-card green-card">
+        <strong>STEM &amp; creative knowledge workers</strong>
+        AI augments output quality without replacing creative or scientific judgment
+      </div>
+    </div>
+  </div>
+
+  <p class="risk-source">Sources: ILO Working Paper 96 · IMF Working Paper 2025/068</p>
+</section>
+
+<!-- ══ 6. TAKEAWAYS ══ -->
+<section id="takeaways">
+  <span class="section-label">Conclusions</span>
+  <span class="page-num">06 / 08</span>
+
+  <h2 class="section-title">Key <span>Takeaways</span></h2>
+
+  <div class="takeaway-grid">
+    <div class="takeaway-card">
+      <div class="takeaway-num">01</div>
+      <div class="takeaway-text">AI is augmenting jobs more than destroying them — for now</div>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">02</div>
+      <div class="takeaway-text">The digital divide is widening, not narrowing</div>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">03</div>
+      <div class="takeaway-text">Women and clerical workers face the highest near-term disruption</div>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">04</div>
+      <div class="takeaway-text">Skilling up is the single most important policy lever</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 8. JOB SEARCH ══ -->
+<section id="job-search">
+  <span class="section-label">Job Impact Explorer</span>
+  <span class="page-num">07 / 08</span>
+
+  <h2 class="section-title">Search Any <span>Job</span></h2>
+  <p style="font-size:15px;color:var(--text-dim);text-align:center;max-width:580px;line-height:1.6;">
+    Type any job title to see how AI is projected to reshape it — tasks automated, skills to build, and a 5-dimension impact profile.
+  </p>
+
+  <div class="search-wrap" id="searchWrap">
+    <div class="search-box">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="jobInput" placeholder="e.g. Nurse, Accountant, Software Engineer…" autocomplete="off" />
+      <button class="search-btn" id="searchBtn">Explore</button>
+    </div>
+    <div id="searchDropdown" class="search-dropdown"></div>
+    <div class="job-chips" id="jobChips"></div>
+  </div>
+
+  <div id="jobResult" class="job-result" style="display:none;"></div>
+</section>
+
+<!-- ══ 9. SOURCES ══ -->
+<section id="sources">
+  <span class="section-label">References</span>
+  <span class="page-num">08 / 08</span>
+
+  <h2 class="section-title" style="margin-bottom:8px;">Sources</h2>
+
+  <div class="sources-grid">
+    <div class="source-card">
+      <span class="source-tag">WEF</span>
+      <p>
+        <strong>World Economic Forum.</strong> (2025). <em>Future of Jobs Report 2025.</em>
+        Geneva: WEF. Jobs projection, skill transformation, and displacement data.<br>
+        <a href="https://www.weforum.org/reports/the-future-of-jobs-report-2025/" target="_blank">weforum.org/reports/future-of-jobs-2025</a>
+      </p>
+    </div>
+    <div class="source-card">
+      <span class="source-tag">Microsoft</span>
+      <p>
+        <strong>Microsoft AI Economy Institute.</strong> (2025). <em>AI Skills &amp; Adoption Report, H2 2025.</em>
+        Regional adoption rates and global usage statistics.<br>
+        <a href="https://www.microsoft.com/en-us/ai/ai-economy" target="_blank">microsoft.com/en-us/ai/ai-economy</a>
+      </p>
+    </div>
+    <div class="source-card">
+      <span class="source-tag">ILO</span>
+      <p>
+        <strong>International Labour Organization.</strong> (2023). <em>Generative AI and Jobs: A Global Analysis of Potential Effects on Job Quality and Quantity.</em> ILO Working Paper 96.<br>
+        <a href="https://www.ilo.org/publications/generative-ai-and-jobs" target="_blank">ilo.org/publications/generative-ai-and-jobs</a>
+      </p>
+    </div>
+    <div class="source-card">
+      <span class="source-tag">IMF</span>
+      <p>
+        <strong>Cazzaniga, M. et al.</strong> (2025). <em>Gen-AI: Artificial Intelligence and the Future of Work.</em> IMF Working Paper 2025/068. Washington, D.C.: IMF.<br>
+        <a href="https://www.imf.org/en/Publications/WP/Issues/2025" target="_blank">imf.org/en/Publications/WP</a>
+      </p>
+    </div>
+    <div class="source-card">
+      <span class="source-tag">OECD</span>
+      <p>
+        <strong>OECD.</strong> (2024). <em>Artificial Intelligence and Labour Market Polarisation.</em> OECD AI Papers No. 13. Paris: OECD Publishing.<br>
+        <a href="https://doi.org/10.1787/oecd-ai-papers-no13" target="_blank">doi.org/10.1787/oecd-ai-papers-no13</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FLOATING WIDGETS ══ -->
+<nav id="navDots">
+  <div class="nav-dot active" data-section="hero"         data-label="Intro"></div>
+  <div class="nav-dot"        data-section="stats"        data-label="Big Numbers"></div>
+  <div class="nav-dot"        data-section="adoption"     data-label="Adoption Gap"></div>
+  <div class="nav-dot"        data-section="displacement" data-label="Displacement"></div>
+  <div class="nav-dot"        data-section="risk"         data-label="Who Bears Risk"></div>
+  <div class="nav-dot"        data-section="takeaways"    data-label="Takeaways"></div>
+  <div class="nav-dot"        data-section="job-search"   data-label="Job Explorer"></div>
+  <div class="nav-dot"        data-section="sources"      data-label="Sources"></div>
+</nav>
+
+<div id="timer">
+  <div id="timerLabel">Presentation</div>
+  <div id="timerDisplay">5:00</div>
+  <div class="timer-btns">
+    <button class="timer-btn" id="timerStart">&#9654;</button>
+    <button class="timer-btn" id="timerReset">&#8635;</button>
+  </div>
+</div>
+
+
+
+<script>
+// ── Chart.js global defaults ──
+Chart.defaults.color = '#8BAAB8';
+Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+Chart.defaults.font.size = 12;
+
+// ── Intersection Observer for counter animation ──
+const TEAL  = '#00B4D8';
+const GOLD  = '#FFB703';
+const RED   = '#E63946';
+const GREEN = '#2DC653';
+const NAVY  = '#0D1B2A';
+const NAVYM = '#1a2d45';
+
+function animateCounter(el, end, suffix, duration = 1600) {
+  const start = 0;
+  const startTime = performance.now();
+  const isFloat = String(end).includes('.');
+  function step(now) {
+    const p = Math.min((now - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    const val = isFloat ? (start + (end - start) * eased).toFixed(1) : Math.round(start + (end - start) * eased);
+    el.textContent = val + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    animateCounter(document.getElementById('c2'), 170, 'M');
+    animateCounter(document.getElementById('c3'),  92, 'M');
+    animateCounter(document.getElementById('c4'),  39, '%');
+    statsObserver.disconnect();
+  });
+}, { threshold: 0.3 });
+statsObserver.observe(document.getElementById('stats'));
+
+// ── CHART 1: Horizontal Bar — Adoption ──
+(function() {
+  const labels = [
+    'UAE', 'Singapore', 'United States', 'Global North Avg.',
+    'South Korea ↑', 'Global South Avg.'
+  ];
+  const data = [64, 60.9, 28.3, 24.7, 22, 14.1];
+  const colors = [TEAL, TEAL, 'rgba(0,180,216,0.55)', 'rgba(0,180,216,0.4)', GOLD, RED];
+  const GLOBAL_AVG = 24.7;
+
+  const adoptionPlugin = {
+    id: 'adoptionLabels',
+    afterDraw(chart) {
+      const { ctx, scales: { x, y } } = chart;
+      // Value labels at bar ends
+      chart.getDatasetMeta(0).data.forEach((bar, i) => {
+        const val = data[i];
+        ctx.save();
+        ctx.fillStyle = '#E8F1F2';
+        ctx.font = 'bold 14px "Segoe UI", system-ui, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(val + '%', bar.x + 10, bar.y);
+        ctx.restore();
+      });
+      // Dashed reference line at global average
+      const lineX = x.getPixelForValue(GLOBAL_AVG);
+      ctx.save();
+      ctx.setLineDash([6, 4]);
+      ctx.strokeStyle = 'rgba(255,183,3,0.55)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(lineX, chart.chartArea.top);
+      ctx.lineTo(lineX, chart.chartArea.bottom);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      // Reference label
+      ctx.fillStyle = GOLD;
+      ctx.font = '10px "Segoe UI", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Global Avg.', lineX, chart.chartArea.top - 8);
+      ctx.restore();
+    }
+  };
+
+  const obs = new IntersectionObserver((entries) => {
+    if (!entries[0].isIntersecting) return;
+    obs.disconnect();
+    new Chart(document.getElementById('adoptionChart'), {
+      type: 'bar',
+      plugins: [adoptionPlugin],
+      data: {
+        labels,
+        datasets: [{
+          label: 'AI Adoption Rate (%)',
+          data,
+          backgroundColor: colors,
+          borderRadius: 7,
+          borderSkipped: false,
+          barThickness: 34,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: { padding: { right: 70, top: 20 } },
+        plugins: {
+          title: {
+            display: true,
+            text: 'AI Adoption Rate by Economy (H2 2025)',
+            color: '#E8F1F2',
+            font: { size: 15, weight: '700' },
+            padding: { bottom: 20 }
+          },
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: ctx => ` ${ctx.parsed.x}%`
+            }
+          }
+        },
+        scales: {
+          x: {
+            max: 82,
+            grid: { color: 'rgba(255,255,255,0.06)' },
+            ticks: { callback: v => v + '%', font: { size: 12 } },
+            border: { color: 'rgba(255,255,255,0.1)' }
+          },
+          y: {
+            grid: { display: false },
+            ticks: { font: { size: 13, weight: '500' }, color: '#E8F1F2' }
+          }
+        },
+        animation: { duration: 1000, easing: 'easeOutQuart' }
+      }
+    });
+  }, { threshold: 0.2 });
+  obs.observe(document.getElementById('adoption'));
+})();
+
+// ── CHART 2: Doughnut — Net Jobs ──
+(function() {
+  const obs = new IntersectionObserver((entries) => {
+    if (!entries[0].isIntersecting) return;
+    obs.disconnect();
+    new Chart(document.getElementById('doughnutChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Jobs Created', 'Jobs Displaced', 'Net Gain'],
+        datasets: [{
+          data: [170, 92, 78],
+          backgroundColor: [GREEN, RED, GOLD],
+          borderColor: NAVYM,
+          borderWidth: 3,
+          hoverOffset: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '60%',
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: ctx => ` ${ctx.label}: ${ctx.parsed}M`
+            }
+          }
+        },
+        animation: { duration: 900 }
+      }
+    });
+  }, { threshold: 0.2 });
+  obs.observe(document.getElementById('displacement'));
+})();
+
+// ── CHART 3: Bar — Skills ──
+(function() {
+  const obs = new IntersectionObserver((entries) => {
+    if (!entries[0].isIntersecting) return;
+    obs.disconnect();
+    new Chart(document.getElementById('skillsChart'), {
+      type: 'bar',
+      data: {
+        labels: ['AI & Big Data', 'Green Transition', 'Digital Skills', 'Creative Thinking', 'Resilience',
+                 'Data Entry', 'Clerical', 'Repetitive Manual', 'Bookkeeping', 'Scheduling'],
+        datasets: [
+          {
+            label: 'Growing',
+            data: [72, 65, 68, 60, 55, null, null, null, null, null],
+            backgroundColor: GREEN,
+            borderRadius: 4,
+          },
+          {
+            label: 'Declining',
+            data: [null, null, null, null, null, -68, -58, -54, -61, -50],
+            backgroundColor: RED,
+            borderRadius: 4,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: { boxWidth: 12, font: { size: 11 } }
+          },
+          tooltip: {
+            callbacks: {
+              label: ctx => {
+                const v = ctx.parsed.y;
+                return ` ${v > 0 ? 'Growth' : 'Decline'}: ${Math.abs(v)} index pts`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { font: { size: 10 }, maxRotation: 35 }
+          },
+          y: {
+            grid: { color: 'rgba(255,255,255,0.06)' },
+            ticks: { callback: v => (v > 0 ? '+' : '') + v }
+          }
+        },
+        animation: { duration: 900, easing: 'easeOutQuart' }
+      }
+    });
+  }, { threshold: 0.2 });
+  obs.observe(document.getElementById('displacement'));
+})();
+
+
+// ── STAT CARD CONTEXT TOGGLES ──
+document.querySelectorAll('.stat-info-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const card = btn.closest('.stat-card');
+    const isOpen = card.classList.contains('context-open');
+    // Close all others first
+    document.querySelectorAll('.stat-card.context-open').forEach(c => c.classList.remove('context-open'));
+    if (!isOpen) card.classList.add('context-open');
+  });
+});
+// Click outside to close
+document.addEventListener('click', () => {
+  document.querySelectorAll('.stat-card.context-open').forEach(c => c.classList.remove('context-open'));
+});
+
+// ── JOB SEARCH ──
+(function() {
+  let radarChart = null;
+
+  const JOBS = [
+    // TECHNOLOGY
+    { title:'Software Engineer', category:'Technology', riskScore:42, netImpact:'positive', timeline:'2–5 years',
+      headline:'AI accelerates coding workflows but amplifies — not replaces — software engineers. Demand for AI-literate engineers is surging.',
+      tasksAutomated:['Boilerplate code generation','Documentation writing','Basic debugging','Unit test generation'],
+      tasksEnhanced:['System architecture','Complex problem-solving','Code review','Cross-team collaboration'],
+      skillsToLearn:['Prompt engineering','AI/ML integration','LLM-assisted development','System design'],
+      radar:{automation:42,augmentation:88,growth:78,wageStability:85,adaptability:80} },
+    { title:'Data Scientist', category:'Technology', riskScore:35, netImpact:'positive', timeline:'3–7 years',
+      headline:'AI automates exploratory analysis and model building, but interpretation, storytelling, and business strategy remain distinctly human.',
+      tasksAutomated:['Exploratory data analysis','Feature engineering','Model selection','Report generation'],
+      tasksEnhanced:['Strategic insight generation','Experiment design','Stakeholder communication','Novel research'],
+      skillsToLearn:['LLM fine-tuning','AutoML orchestration','Causal inference','AI ethics'],
+      radar:{automation:35,augmentation:90,growth:82,wageStability:88,adaptability:78} },
+    { title:'UX Designer', category:'Technology', riskScore:30, netImpact:'positive', timeline:'4–8 years',
+      headline:'AI generates design variants and automates user research synthesis, but creative direction and empathy-driven design remain human territory.',
+      tasksAutomated:['Wireframe generation','User research synthesis','Accessibility checking','Asset creation'],
+      tasksEnhanced:['User empathy & research','Creative strategy','Interaction design','Stakeholder alignment'],
+      skillsToLearn:['AI design tools (Figma AI, Galileo)','Prompt-driven prototyping','Behavioral research'],
+      radar:{automation:30,augmentation:75,growth:70,wageStability:78,adaptability:82} },
+    { title:'IT Support Technician', category:'Technology', riskScore:72, netImpact:'negative', timeline:'2–4 years',
+      headline:'Level-1 IT support is heavily automatable via AI chatbots and self-healing systems. Complex troubleshooting and vendor management remain.',
+      tasksAutomated:['Password resets','FAQ responses','Ticket triage','Basic diagnostics','Software installations'],
+      tasksEnhanced:['Complex infrastructure issues','Security incident response','Vendor management'],
+      skillsToLearn:['Cloud infrastructure (AWS/Azure)','Cybersecurity fundamentals','AI tool administration'],
+      radar:{automation:72,augmentation:48,growth:35,wageStability:45,adaptability:62} },
+    { title:'Cybersecurity Analyst', category:'Technology', riskScore:28, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI strengthens threat detection and response automation, but human judgment for novel threats and ethical decisions remains indispensable.',
+      tasksAutomated:['Log monitoring','Known threat detection','Vulnerability scanning','Incident ticketing'],
+      tasksEnhanced:['Zero-day threat analysis','Red team exercises','Policy & compliance','Incident response strategy'],
+      skillsToLearn:['AI-assisted threat intelligence','Adversarial ML','Cloud security','Zero-trust architecture'],
+      radar:{automation:28,augmentation:82,growth:90,wageStability:92,adaptability:70} },
+    { title:'DevOps Engineer', category:'Technology', riskScore:38, netImpact:'positive', timeline:'3–6 years',
+      headline:'AI automates CI/CD pipeline monitoring and incident alerting, but cloud architecture and reliability engineering require strong human judgment.',
+      tasksAutomated:['Log analysis','Routine deployments','Alert triage','Infrastructure monitoring'],
+      tasksEnhanced:['Platform architecture','Incident post-mortems','Security hardening','Developer experience'],
+      skillsToLearn:['AIOps platforms','Platform engineering','FinOps','SRE practices'],
+      radar:{automation:38,augmentation:80,growth:82,wageStability:88,adaptability:78} },
+    // FINANCE
+    { title:'Financial Analyst', category:'Finance', riskScore:62, netImpact:'mixed', timeline:'3–6 years',
+      headline:'AI excels at data aggregation and quantitative modeling, compressing analyst headcount at junior levels. Client-facing strategy roles are safer.',
+      tasksAutomated:['Data collection & cleaning','Financial modeling templates','Report generation','Ratio analysis'],
+      tasksEnhanced:['Investment thesis development','Client advisory','Scenario planning','Cross-asset strategy'],
+      skillsToLearn:['AI-augmented financial modeling','Python/SQL for finance','Behavioral finance','Communication'],
+      radar:{automation:62,augmentation:70,growth:50,wageStability:62,adaptability:65} },
+    { title:'Accountant', category:'Finance', riskScore:74, netImpact:'negative', timeline:'2–5 years',
+      headline:'Routine bookkeeping, reconciliation, and tax preparation are highly automatable. Advisory-focused CPAs with tech skills are better positioned.',
+      tasksAutomated:['Data entry & bookkeeping','Bank reconciliation','Invoice processing','Basic tax preparation'],
+      tasksEnhanced:['Financial strategy advice','Complex tax planning','Audit oversight','Business advisory'],
+      skillsToLearn:['AI accounting platforms','Financial advisory skills','Regulatory expertise'],
+      radar:{automation:74,augmentation:55,growth:30,wageStability:48,adaptability:58} },
+    { title:'Insurance Underwriter', category:'Finance', riskScore:78, netImpact:'negative', timeline:'2–4 years',
+      headline:'AI outperforms humans on risk pattern recognition in standard lines. Complex commercial and specialty lines retain human underwriters.',
+      tasksAutomated:['Standard risk assessment','Policy pricing','Claims triage','Data verification'],
+      tasksEnhanced:['Complex commercial accounts','Relationship management','Novel risk categories'],
+      skillsToLearn:['AI risk modeling tools','Complex commercial lines','Climate risk assessment'],
+      radar:{automation:78,augmentation:45,growth:25,wageStability:40,adaptability:52} },
+    { title:'Financial Advisor', category:'Finance', riskScore:48, netImpact:'mixed', timeline:'5–10 years',
+      headline:'Robo-advisors handle routine portfolio management, but holistic planning, life-event guidance, and client trust remain human-centric.',
+      tasksAutomated:['Portfolio rebalancing','Market updates','Basic financial projections','Regulatory paperwork'],
+      tasksEnhanced:['Life planning conversations','Estate & tax strategy','Behavioral coaching','Complex family wealth'],
+      skillsToLearn:['AI-powered planning tools','Behavioral finance','Estate planning','Emotional intelligence'],
+      radar:{automation:48,augmentation:65,growth:55,wageStability:68,adaptability:70} },
+    { title:'Tax Preparer', category:'Finance', riskScore:85, netImpact:'negative', timeline:'1–3 years',
+      headline:'Automated tax software now handles most personal and small-business returns. Complex international and estate tax work remains human.',
+      tasksAutomated:['Standard return filing','Form auto-population','Deduction identification','E-filing'],
+      tasksEnhanced:['Complex tax strategy','Audit representation','International tax','Estate planning'],
+      skillsToLearn:['Tax strategy consulting','IRS representation','International tax law'],
+      radar:{automation:85,augmentation:40,growth:20,wageStability:28,adaptability:52} },
+    // HEALTHCARE
+    { title:'Physician / Doctor', category:'Healthcare', riskScore:28, netImpact:'positive', timeline:'7–15 years',
+      headline:'AI aids diagnosis and reduces administrative burden, but clinical judgment, patient trust, and procedural skills are deeply protected.',
+      tasksAutomated:['Medical imaging analysis','EHR documentation','Routine triage','Drug interaction checks'],
+      tasksEnhanced:['Complex diagnosis','Treatment planning','Patient communication','Rare disease identification'],
+      skillsToLearn:['AI diagnostic tools','Clinical AI interpretation','Digital health literacy'],
+      radar:{automation:28,augmentation:85,growth:72,wageStability:90,adaptability:60} },
+    { title:'Nurse', category:'Healthcare', riskScore:18, netImpact:'positive', timeline:'10+ years',
+      headline:'Physical care, emotional support, and real-time clinical judgment make nursing highly resilient to automation. Demand is projected to grow significantly.',
+      tasksAutomated:['Vital sign monitoring','Medication reminders','Scheduling','Basic patient documentation'],
+      tasksEnhanced:['Complex patient assessment','Care coordination','Patient advocacy','Family communication'],
+      skillsToLearn:['Smart monitoring systems','Digital health records','Telehealth skills'],
+      radar:{automation:18,augmentation:60,growth:88,wageStability:82,adaptability:75} },
+    { title:'Radiologist', category:'Healthcare', riskScore:65, netImpact:'mixed', timeline:'3–7 years',
+      headline:'AI matches or exceeds radiologists in detecting standard pathologies. Radiologists who specialize in complex cases and AI oversight are well-positioned.',
+      tasksAutomated:['Routine scan screening','Standard lesion detection','Report templating','Quality control'],
+      tasksEnhanced:['Rare pathology diagnosis','Interventional radiology','Multi-modal case review','AI audit'],
+      skillsToLearn:['AI radiology platforms','Interventional techniques','Clinical AI validation'],
+      radar:{automation:65,augmentation:72,growth:42,wageStability:60,adaptability:55} },
+    { title:'Pharmacist', category:'Healthcare', riskScore:55, netImpact:'mixed', timeline:'4–8 years',
+      headline:'Dispensing and drug interaction checks are highly automatable; clinical pharmacy and patient counseling are more protected.',
+      tasksAutomated:['Drug dispensing','Drug interaction screening','Insurance verification','Refill processing'],
+      tasksEnhanced:['Medication therapy management','Patient counseling','Clinical consultations','Chronic disease management'],
+      skillsToLearn:['Clinical pharmacy specialization','AI medication management tools','Patient coaching'],
+      radar:{automation:55,augmentation:62,growth:45,wageStability:65,adaptability:62} },
+    { title:'Medical Coder', category:'Healthcare', riskScore:88, netImpact:'negative', timeline:'1–3 years',
+      headline:'Medical coding is among the most automatable healthcare roles — AI extracts, categorizes, and codes clinical data with high accuracy.',
+      tasksAutomated:['ICD/CPT code extraction','Claim submission','Compliance checking','Error detection'],
+      tasksEnhanced:['Complex case auditing','Denial management','Coding education','Edge case review'],
+      skillsToLearn:['Clinical auditing','Revenue cycle management','Healthcare data analytics'],
+      radar:{automation:88,augmentation:38,growth:15,wageStability:28,adaptability:50} },
+    { title:'Psychologist / Therapist', category:'Healthcare', riskScore:18, netImpact:'positive', timeline:'10+ years',
+      headline:'Therapeutic relationship, nuanced interpretation, and ethical judgment are AI-resistant. AI assists with between-session support and admin tasks.',
+      tasksAutomated:['Session note transcription','Treatment plan templates','Scheduling','Psychoeducation content'],
+      tasksEnhanced:['Deep therapeutic work','Complex diagnoses','Crisis management','Supervision & training'],
+      skillsToLearn:['AI-assisted therapy tools','Teletherapy platforms','Digital mental health'],
+      radar:{automation:18,augmentation:58,growth:82,wageStability:78,adaptability:72} },
+    // LEGAL
+    { title:'Lawyer', category:'Legal', riskScore:46, netImpact:'mixed', timeline:'3–8 years',
+      headline:'AI automates legal research, discovery, and contract review — compressing junior associate roles. Litigation, strategy, and client counsel remain protected.',
+      tasksAutomated:['Legal research','Contract review','E-discovery','Due diligence','Brief drafting'],
+      tasksEnhanced:['Courtroom advocacy','Legal strategy','Client relationships','Regulatory interpretation'],
+      skillsToLearn:['Legal AI platforms (Harvey, CoCounsel)','AI contract analysis','Regulatory tech'],
+      radar:{automation:46,augmentation:72,growth:52,wageStability:70,adaptability:62} },
+    { title:'Paralegal', category:'Legal', riskScore:70, netImpact:'negative', timeline:'2–5 years',
+      headline:'AI performs most paralegal research, discovery, and drafting tasks faster and cheaper. The role is shifting toward AI management and complex coordination.',
+      tasksAutomated:['Legal research','Document review','Contract drafting','Case file management','Discovery'],
+      tasksEnhanced:['Client communication','Complex case coordination','Deposition preparation'],
+      skillsToLearn:['Legal AI tools','Practice management software','Litigation support tech'],
+      radar:{automation:70,augmentation:55,growth:30,wageStability:42,adaptability:60} },
+    // EDUCATION
+    { title:'Teacher (K-12)', category:'Education', riskScore:22, netImpact:'positive', timeline:'8–15 years',
+      headline:'Classroom management, mentorship, and social-emotional development are deeply human. AI handles personalized curriculum delivery, freeing teachers for deeper engagement.',
+      tasksAutomated:['Grading routine assignments','Lesson plan generation','Personalized tutoring content','Administrative tasks'],
+      tasksEnhanced:['Student mentorship','Social-emotional learning','Creative projects','Parent relationships'],
+      skillsToLearn:['AI tutoring tools (Khan Academy AI)','Differentiated instruction','SEL coaching'],
+      radar:{automation:22,augmentation:65,growth:60,wageStability:68,adaptability:78} },
+    { title:'Professor / Academic', category:'Education', riskScore:30, netImpact:'positive', timeline:'5–10 years',
+      headline:'Research, original inquiry, and mentoring graduate students are strongly protected. Lecture delivery and grading are increasingly AI-assisted.',
+      tasksAutomated:['Lecture slides','Grading','Literature reviews','Student FAQs'],
+      tasksEnhanced:['Original research','Critical discourse','Graduate mentorship','Grant strategy'],
+      skillsToLearn:['AI research tools','AI-assisted peer review','Digital pedagogy'],
+      radar:{automation:30,augmentation:70,growth:55,wageStability:72,adaptability:68} },
+    // CREATIVE
+    { title:'Graphic Designer', category:'Creative', riskScore:52, netImpact:'mixed', timeline:'2–5 years',
+      headline:'Generative AI produces high-quality visuals rapidly, compressing demand for commodity design work. Strategic and brand-level creative direction is growing.',
+      tasksAutomated:['Stock image creation','Basic layout generation','Image editing','Template design','Icon sets'],
+      tasksEnhanced:['Brand identity strategy','Campaign direction','Client collaboration','Motion & experience design'],
+      skillsToLearn:['Midjourney / DALL-E for prototyping','Motion design','Brand strategy','UI/UX crossover'],
+      radar:{automation:52,augmentation:78,growth:45,wageStability:52,adaptability:75} },
+    { title:'Journalist / Writer', category:'Creative', riskScore:58, netImpact:'mixed', timeline:'2–5 years',
+      headline:'AI drafts routine news content quickly, threatening commodity writing. Investigative journalism, analysis, and voice-driven writing remain highly valued.',
+      tasksAutomated:['News summaries','Press release rewrites','Data reporting','SEO content','Social copy'],
+      tasksEnhanced:['Investigative reporting','Long-form analysis','Source cultivation','Editorial judgment'],
+      skillsToLearn:['AI-assisted research tools','Data journalism','Audience analytics','Multimedia storytelling'],
+      radar:{automation:58,augmentation:70,growth:38,wageStability:42,adaptability:68} },
+    { title:'Marketing Manager', category:'Creative', riskScore:45, netImpact:'mixed', timeline:'3–6 years',
+      headline:'AI handles content creation and campaign execution, but brand positioning, insight synthesis, and cross-functional leadership are distinctly human.',
+      tasksAutomated:['Ad copy generation','A/B test setup','Social media scheduling','Email personalization'],
+      tasksEnhanced:['Brand strategy','Consumer insight synthesis','Cross-channel leadership','Creative direction'],
+      skillsToLearn:['AI marketing stacks','Data-driven brand strategy','Generative AI content tools','Analytics'],
+      radar:{automation:45,augmentation:80,growth:60,wageStability:65,adaptability:75} },
+    { title:'Video Editor', category:'Creative', riskScore:58, netImpact:'mixed', timeline:'2–4 years',
+      headline:'AI automates rough cuts, color grading, and subtitles. High-end narrative editing and director collaboration hold value.',
+      tasksAutomated:['Rough cut assembly','Color grading','Subtitle generation','Background removal','Audio cleanup'],
+      tasksEnhanced:['Narrative storytelling','Director collaboration','Brand tone management','Visual effects oversight'],
+      skillsToLearn:['AI editing tools (Adobe Firefly, RunwayML)','Motion graphics','Visual storytelling strategy'],
+      radar:{automation:58,augmentation:72,growth:42,wageStability:50,adaptability:72} },
+    { title:'Architect', category:'Creative', riskScore:32, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI accelerates design iteration and documentation. Creative vision, structural judgment, regulatory navigation, and client relationships remain human domains.',
+      tasksAutomated:['Draft generation','Structural analysis','Compliance checking','BIM documentation','Energy modeling'],
+      tasksEnhanced:['Design vision & concept','Client relationships','Complex site constraints','Urban planning'],
+      skillsToLearn:['Generative design tools (Autodesk AI)','Sustainable design','BIM mastery','Urban systems thinking'],
+      radar:{automation:32,augmentation:80,growth:60,wageStability:70,adaptability:75} },
+    // OPERATIONS / HR
+    { title:'Customer Service Representative', category:'Operations', riskScore:85, netImpact:'negative', timeline:'1–3 years',
+      headline:'AI chatbots and voice agents now handle the majority of routine customer inquiries. Human agents are increasingly reserved for complex escalations.',
+      tasksAutomated:['FAQ responses','Order tracking','Return processing','Basic troubleshooting','Ticket routing'],
+      tasksEnhanced:['Complex complaint resolution','VIP customer management','Empathy-intensive cases'],
+      skillsToLearn:['AI escalation management','CX strategy','Technical support specialization'],
+      radar:{automation:85,augmentation:40,growth:20,wageStability:25,adaptability:55} },
+    { title:'Sales Representative', category:'Operations', riskScore:48, netImpact:'mixed', timeline:'3–7 years',
+      headline:'AI handles prospecting and CRM updates. Complex enterprise sales, relationship-based deals, and negotiation are resilient.',
+      tasksAutomated:['Lead scoring','Initial outreach emails','CRM data entry','Meeting scheduling','Proposal drafts'],
+      tasksEnhanced:['Complex deal negotiation','Executive relationships','Strategic account management'],
+      skillsToLearn:['AI sales tools (Salesforce Einstein, Gong)','Consultative selling','Value-based sales methodology'],
+      radar:{automation:48,augmentation:75,growth:55,wageStability:60,adaptability:70} },
+    { title:'Project Manager', category:'Operations', riskScore:35, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI handles scheduling, status tracking, and risk flagging. Human leadership, stakeholder alignment, and strategic judgment are AI-complementary.',
+      tasksAutomated:['Status reporting','Timeline scheduling','Risk monitoring','Meeting notes','Resource allocation'],
+      tasksEnhanced:['Stakeholder alignment','Strategic prioritization','Conflict resolution','Executive communication'],
+      skillsToLearn:['AI PM tools (Linear AI, Notion AI)','Agile + AI workflows','Data-driven decision-making'],
+      radar:{automation:35,augmentation:80,growth:65,wageStability:72,adaptability:80} },
+    { title:'HR Manager', category:'Operations', riskScore:42, netImpact:'mixed', timeline:'4–8 years',
+      headline:'AI automates screening, onboarding, and policy queries. Employee relations, culture leadership, and sensitive HR matters require human judgment.',
+      tasksAutomated:['Resume screening','Onboarding paperwork','Policy FAQ chatbots','Leave management','Payroll processing'],
+      tasksEnhanced:['Culture & engagement','Complex employee relations','Leadership development','DEI strategy'],
+      skillsToLearn:['People analytics','AI HR tools (Workday AI, Greenhouse)','Organizational psychology'],
+      radar:{automation:42,augmentation:68,growth:52,wageStability:62,adaptability:72} },
+    { title:'Recruiter', category:'Operations', riskScore:62, netImpact:'mixed', timeline:'2–5 years',
+      headline:'AI screens resumes, schedules interviews, and drafts job descriptions. Talent strategy, candidate experience, and senior hire relationships are protected.',
+      tasksAutomated:['Resume screening','Job description writing','Interview scheduling','Candidate sourcing'],
+      tasksEnhanced:['Executive search','Employer branding','Candidate relationship building','Hiring strategy'],
+      skillsToLearn:['AI sourcing tools','Human-centered assessment','Workforce planning','DEI hiring practices'],
+      radar:{automation:62,augmentation:65,growth:40,wageStability:50,adaptability:68} },
+    { title:'Supply Chain Manager', category:'Operations', riskScore:40, netImpact:'mixed', timeline:'4–8 years',
+      headline:'AI optimizes routing, forecasting, and inventory at scale. Strategic supplier relationships, disruption response, and ethics oversight require human leadership.',
+      tasksAutomated:['Demand forecasting','Inventory optimization','Route planning','Supplier data analysis'],
+      tasksEnhanced:['Supplier relationships','Disruption management','ESG compliance','Contract negotiation'],
+      skillsToLearn:['Supply chain AI platforms','Climate risk modeling','Geopolitical risk assessment'],
+      radar:{automation:40,augmentation:78,growth:62,wageStability:70,adaptability:72} },
+    // TRADES
+    { title:'Construction Worker', category:'Trades', riskScore:20, netImpact:'positive', timeline:'10+ years',
+      headline:'Physical dexterity, on-site adaptability, and complex manual tasks remain beyond current robotics. Infrastructure investment is driving demand growth.',
+      tasksAutomated:['Material logistics','Progress monitoring (drones)','Blueprint analysis'],
+      tasksEnhanced:['Complex structural work','Site problem-solving','Safety management','Skilled finishing'],
+      skillsToLearn:['BIM software','Drone operation','Prefab/modular construction methods'],
+      radar:{automation:20,augmentation:45,growth:75,wageStability:68,adaptability:72} },
+    { title:'Electrician', category:'Trades', riskScore:15, netImpact:'positive', timeline:'10+ years',
+      headline:'Licensed electrical work requires physical presence, safety judgment, and regulatory compliance that AI cannot yet replicate. EV and solar growth is expanding demand.',
+      tasksAutomated:['Permit paperwork','Load calculations','Inspection documentation'],
+      tasksEnhanced:['Complex wiring systems','Smart home/EV installation','Safety inspections','Troubleshooting'],
+      skillsToLearn:['EV charging installation','Solar PV systems','Smart building automation'],
+      radar:{automation:15,augmentation:40,growth:82,wageStability:80,adaptability:78} },
+    { title:'Truck Driver', category:'Trades', riskScore:65, netImpact:'negative', timeline:'5–12 years',
+      headline:'Autonomous trucking is advancing rapidly on highways. Last-mile delivery and complex routes still require human drivers — the transition is slower than predicted.',
+      tasksAutomated:['Highway long-haul driving','Route optimization','Fuel management','Logistics coordination'],
+      tasksEnhanced:['Urban/complex delivery','Hazmat transport','Customer-facing delivery'],
+      skillsToLearn:['Fleet telematics management','AV oversight operator roles','Logistics technology'],
+      radar:{automation:65,augmentation:35,growth:30,wageStability:40,adaptability:48} },
+    { title:'Chef / Cook', category:'Trades', riskScore:28, netImpact:'positive', timeline:'8–15 years',
+      headline:'Creative cuisine, hospitality, and sensory refinement are highly resilient. Routine prep in fast food faces more automation pressure.',
+      tasksAutomated:['Inventory management','Standard recipe scaling','Fast-food prep (robotic lines)','Menu costing'],
+      tasksEnhanced:['Creative menu development','Fine dining execution','Customer experience','Team leadership'],
+      skillsToLearn:['Food tech innovation','Menu engineering','Sustainability sourcing','Hospitality management'],
+      radar:{automation:28,augmentation:42,growth:62,wageStability:55,adaptability:72} },
+    { title:'Warehouse Worker', category:'Operations', riskScore:68, netImpact:'negative', timeline:'3–8 years',
+      headline:'Robotic picking, sorting, and fulfillment are advancing rapidly. Exception handling and specialized packing retain human roles.',
+      tasksAutomated:['Picking & sorting','Inventory counting','Standard packing','Shelf stocking'],
+      tasksEnhanced:['Complex returns handling','Equipment maintenance','Safety oversight','Training new systems'],
+      skillsToLearn:['Robotics operation & maintenance','Warehouse management systems','Logistics tech'],
+      radar:{automation:68,augmentation:38,growth:32,wageStability:38,adaptability:52} },
+    // ADMINISTRATIVE
+    { title:'Administrative Assistant', category:'Administrative', riskScore:72, netImpact:'negative', timeline:'2–4 years',
+      headline:'Scheduling, email drafting, and document management are all highly automatable. Executive assistants with strategic and relationship skills are more resilient.',
+      tasksAutomated:['Calendar management','Email drafting','Meeting notes','Travel booking','Document formatting'],
+      tasksEnhanced:['Executive support & judgment','Project coordination','Stakeholder communication'],
+      skillsToLearn:['AI productivity tools','Executive operations','Project management skills','Data analysis basics'],
+      radar:{automation:72,augmentation:50,growth:25,wageStability:35,adaptability:60} },
+    { title:'Data Entry Clerk', category:'Administrative', riskScore:92, netImpact:'negative', timeline:'1–2 years',
+      headline:'Data entry is the single most automatable clerical occupation — AI extracts, validates, and inputs structured data with near-perfect accuracy at a fraction of the cost.',
+      tasksAutomated:['Form processing','Database updates','Record transcription','Invoice entry','Spreadsheet updates'],
+      tasksEnhanced:['Exception handling','Data quality oversight','Process documentation'],
+      skillsToLearn:['Data analytics','RPA (Robotic Process Automation)','Database management','Excel/Power BI'],
+      radar:{automation:92,augmentation:25,growth:5,wageStability:15,adaptability:55} },
+    { title:'Bookkeeper', category:'Administrative', riskScore:86, netImpact:'negative', timeline:'1–3 years',
+      headline:'Modern accounting software and AI have automated most bookkeeping tasks. Transition to advisory accounting roles offers the clearest path forward.',
+      tasksAutomated:['Transaction categorization','Bank reconciliation','Financial statements','Expense tracking'],
+      tasksEnhanced:['Financial analysis & advisory','Tax planning input','Cash flow management'],
+      skillsToLearn:['AI accounting tools (Xero AI, QuickBooks)','Financial advisory skills','Tax preparation'],
+      radar:{automation:86,augmentation:40,growth:12,wageStability:22,adaptability:58} },
+    { title:'Receptionist', category:'Administrative', riskScore:74, netImpact:'negative', timeline:'2–4 years',
+      headline:'AI voice agents and automated check-in systems are rapidly replacing front-desk functions. Complex visitor management and human-touch hospitality remain.',
+      tasksAutomated:['Appointment scheduling','Visitor check-in','Phone call routing','FAQs','Form processing'],
+      tasksEnhanced:['VIP reception','Complex scheduling','Event coordination','Hospitality management'],
+      skillsToLearn:['Office management platforms','Event coordination','Executive support skills'],
+      radar:{automation:74,augmentation:42,growth:18,wageStability:28,adaptability:58} },
+    // SOCIAL SERVICES
+    { title:'Social Worker', category:'Social Services', riskScore:15, netImpact:'positive', timeline:'10+ years',
+      headline:'Empathy, trauma-informed care, and complex family systems navigation are deeply human. AI assists with case management and administrative tasks.',
+      tasksAutomated:['Case file documentation','Resource matching','Report generation','Appointment scheduling'],
+      tasksEnhanced:['Family assessment','Crisis intervention','Advocacy','Community partnerships'],
+      skillsToLearn:['Digital case management tools','Telehealth support','Data-informed care planning'],
+      radar:{automation:15,augmentation:55,growth:78,wageStability:65,adaptability:80} },
+    // TECHNOLOGY (expanded)
+    { title:'Product Manager', category:'Technology', riskScore:32, netImpact:'positive', timeline:'4–8 years',
+      headline:'AI accelerates user research synthesis and backlog prioritization, but product vision, cross-functional leadership, and customer empathy are deeply human.',
+      tasksAutomated:['User feedback synthesis','Backlog triage','Competitive analysis reports','Sprint metrics'],
+      tasksEnhanced:['Product strategy','Stakeholder alignment','Vision setting','Customer discovery'],
+      skillsToLearn:['AI product analytics','LLM feature integration','Data-driven roadmapping','Jobs-to-be-done framework'],
+      radar:{automation:32,augmentation:82,growth:75,wageStability:85,adaptability:80} },
+    { title:'Machine Learning Engineer', category:'Technology', riskScore:25, netImpact:'positive', timeline:'3–7 years',
+      headline:'Demand for ML engineers is surging as organizations need people who can build, deploy, and govern AI systems — the job is growing faster than it can be automated.',
+      tasksAutomated:['Hyperparameter tuning','Standard model selection','Boilerplate pipeline code','Experiment logging'],
+      tasksEnhanced:['Novel architecture design','MLOps & deployment','AI safety & evaluation','Cross-domain AI integration'],
+      skillsToLearn:['LLM fine-tuning & RLHF','AI evaluation frameworks','ML systems design','Responsible AI practices'],
+      radar:{automation:25,augmentation:92,growth:95,wageStability:95,adaptability:85} },
+    { title:'Web Developer', category:'Technology', riskScore:48, netImpact:'mixed', timeline:'2–5 years',
+      headline:'AI generates functional UI code rapidly, compressing demand for commodity frontend work. Full-stack developers who architect systems and lead technical decisions are resilient.',
+      tasksAutomated:['Boilerplate HTML/CSS','Standard component generation','Basic responsive layouts','Documentation'],
+      tasksEnhanced:['System architecture','Complex UI logic','Performance optimization','Accessibility engineering'],
+      skillsToLearn:['AI-assisted development (Copilot, Cursor)','Full-stack architecture','Web performance','API design'],
+      radar:{automation:48,augmentation:82,growth:62,wageStability:70,adaptability:82} },
+    { title:'Technical Writer', category:'Technology', riskScore:68, netImpact:'negative', timeline:'2–4 years',
+      headline:'AI generates first-draft documentation, API references, and release notes at speed. Human technical writers are shifting toward information architecture and editing roles.',
+      tasksAutomated:['API documentation drafts','Release notes','FAQ generation','Standard how-to guides'],
+      tasksEnhanced:['Information architecture','Complex concept simplification','Developer experience strategy','Content auditing'],
+      skillsToLearn:['Docs-as-code practices','AI content workflow management','Developer relations','UX writing'],
+      radar:{automation:68,augmentation:55,growth:35,wageStability:45,adaptability:70} },
+    { title:'Database Administrator', category:'Technology', riskScore:55, netImpact:'mixed', timeline:'3–6 years',
+      headline:'AI automates query optimization, anomaly detection, and routine maintenance. Database architects designing complex schemas and data strategies are well-positioned.',
+      tasksAutomated:['Query optimization','Index recommendations','Routine backups','Performance monitoring','Anomaly alerts'],
+      tasksEnhanced:['Data architecture design','Complex migration planning','Security hardening','Multi-cloud strategy'],
+      skillsToLearn:['Cloud-native databases','AI-assisted query tools','Data mesh architecture','Privacy engineering'],
+      radar:{automation:55,augmentation:65,growth:45,wageStability:62,adaptability:68} },
+    { title:'Network Administrator', category:'Technology', riskScore:60, netImpact:'mixed', timeline:'3–6 years',
+      headline:'AI-driven AIOps automates routine network monitoring, fault detection, and configuration. Complex infrastructure design and security architecture remain human.',
+      tasksAutomated:['Network monitoring','Fault detection','Configuration backups','Bandwidth analysis','Routine patching'],
+      tasksEnhanced:['Network architecture','Zero-trust design','Vendor negotiations','Complex troubleshooting'],
+      skillsToLearn:['Cloud networking (AWS/Azure)','Network security (SASE, SD-WAN)','AIOps platforms','Automation scripting'],
+      radar:{automation:60,augmentation:58,growth:40,wageStability:55,adaptability:65} },
+    { title:'QA Engineer', category:'Technology', riskScore:62, netImpact:'mixed', timeline:'2–5 years',
+      headline:'AI generates and runs test suites autonomously, shrinking demand for manual QA. Engineers who design test strategy and validate AI outputs are growing in importance.',
+      tasksAutomated:['Regression test generation','Bug report drafting','UI screenshot testing','Test data creation'],
+      tasksEnhanced:['Test strategy & architecture','Exploratory testing','AI output validation','Security testing'],
+      skillsToLearn:['AI testing tools','Property-based testing','LLM evaluation methods','Test automation frameworks'],
+      radar:{automation:62,augmentation:60,growth:42,wageStability:55,adaptability:72} },
+    { title:'Cloud Architect', category:'Technology', riskScore:22, netImpact:'positive', timeline:'5–10 years',
+      headline:'Cloud architects who design AI-ready infrastructure are among the most in-demand roles globally. AI assists with cost modeling and configuration but cannot replace architectural judgment.',
+      tasksAutomated:['Cost optimization reports','Security compliance scans','Standard IaC templates','Capacity forecasting'],
+      tasksEnhanced:['Multi-cloud architecture','AI infrastructure design','FinOps strategy','Disaster recovery planning'],
+      skillsToLearn:['AI/GPU infrastructure (AWS, Azure AI)','FinOps certification','Platform engineering','MLOps infrastructure'],
+      radar:{automation:22,augmentation:88,growth:92,wageStability:95,adaptability:82} },
+    // FINANCE (expanded)
+    { title:'Investment Banker', category:'Finance', riskScore:52, netImpact:'mixed', timeline:'3–7 years',
+      headline:'AI automates financial modeling, pitch deck drafting, and market comps. Deal origination, client trust, and negotiation remain distinctly human at senior levels.',
+      tasksAutomated:['Financial model templates','Comparable company analysis','Pitch deck drafting','Due diligence summaries'],
+      tasksEnhanced:['Deal origination','Client relationships','Negotiation strategy','Complex M&A structuring'],
+      skillsToLearn:['AI financial modeling tools','Alternative data analysis','ESG deal structuring','Private credit knowledge'],
+      radar:{automation:52,augmentation:68,growth:48,wageStability:72,adaptability:62} },
+    { title:'Actuary', category:'Finance', riskScore:45, netImpact:'mixed', timeline:'5–10 years',
+      headline:'AI accelerates risk modeling and scenario analysis, but actuarial judgment, regulatory interpretation, and communication of uncertainty to boards remain human.',
+      tasksAutomated:['Standard risk model runs','Data cleaning & validation','Reserve calculations','Regulatory reporting'],
+      tasksEnhanced:['Novel risk modeling','Climate & systemic risk','Board-level communication','Model governance'],
+      skillsToLearn:['ML-based risk models','Climate risk actuarial methods','Explainable AI for regulators','Python/R for actuarial science'],
+      radar:{automation:45,augmentation:72,growth:55,wageStability:78,adaptability:68} },
+    { title:'Compliance Officer', category:'Finance', riskScore:50, netImpact:'mixed', timeline:'4–8 years',
+      headline:'AI monitors transactions and flags anomalies at scale, but interpreting ambiguous regulations and building compliance culture require human expertise.',
+      tasksAutomated:['Transaction monitoring','Regulatory filing drafts','Policy document review','AML screening'],
+      tasksEnhanced:['Regulatory interpretation','Risk culture leadership','Regulator relationships','Complex investigations'],
+      skillsToLearn:['RegTech platforms','AI-assisted compliance tools','ESG regulatory frameworks','Sanctions & AML expertise'],
+      radar:{automation:50,augmentation:70,growth:60,wageStability:72,adaptability:65} },
+    { title:'Auditor', category:'Finance', riskScore:65, netImpact:'negative', timeline:'2–5 years',
+      headline:'AI can audit 100% of transactions in seconds — a task that previously required sampling. Auditors are shifting to AI oversight, complex judgment, and advisory roles.',
+      tasksAutomated:['Transaction testing','Variance analysis','Standard workpaper prep','Reconciliation checks'],
+      tasksEnhanced:['Risk assessment judgment','Fraud investigation','Client advisory','Regulatory interface'],
+      skillsToLearn:['Continuous auditing tools','Data analytics for audit','Forensic accounting','AI audit oversight'],
+      radar:{automation:65,augmentation:58,growth:38,wageStability:52,adaptability:62} },
+    { title:'Credit Analyst', category:'Finance', riskScore:70, netImpact:'negative', timeline:'2–5 years',
+      headline:'AI credit scoring models have surpassed traditional analyst judgment for standard loans. Complex commercial lending and relationship-based credit remain more protected.',
+      tasksAutomated:['Credit scoring','Financial ratio analysis','Standard credit memos','Portfolio monitoring'],
+      tasksEnhanced:['Complex commercial credit','Distressed debt analysis','Client relationship management','Portfolio strategy'],
+      skillsToLearn:['Alternative credit data analysis','Structured credit expertise','Relationship banking','ESG credit assessment'],
+      radar:{automation:70,augmentation:52,growth:32,wageStability:42,adaptability:60} },
+    // HEALTHCARE (expanded)
+    { title:'Dentist', category:'Healthcare', riskScore:22, netImpact:'positive', timeline:'8–15 years',
+      headline:'AI detects cavities and diagnoses oral conditions from X-rays, but manual dexterity, patient rapport, and procedural dentistry are protected.',
+      tasksAutomated:['X-ray analysis','Treatment planning suggestions','Insurance pre-authorization','Patient record documentation'],
+      tasksEnhanced:['Complex restorative work','Oral surgery','Patient communication','Cosmetic assessment'],
+      skillsToLearn:['AI diagnostic imaging tools','Cosmetic & implant dentistry','Digital smile design','Tele-dentistry'],
+      radar:{automation:22,augmentation:70,growth:65,wageStability:85,adaptability:62} },
+    { title:'Surgeon', category:'Healthcare', riskScore:20, netImpact:'positive', timeline:'10+ years',
+      headline:'Robotic surgery enhances precision and reduces fatigue, but surgical judgment, crisis management, and the tactile demands of operating remain irreplaceable.',
+      tasksAutomated:['Pre-op imaging analysis','Surgical route planning','Post-op documentation','Risk stratification'],
+      tasksEnhanced:['Complex surgical execution','Intraoperative decision-making','Complication management','Mentoring residents'],
+      skillsToLearn:['Robotic surgery platforms (Da Vinci)','AI-guided surgical planning','Minimally invasive techniques'],
+      radar:{automation:20,augmentation:75,growth:70,wageStability:95,adaptability:55} },
+    { title:'Physical Therapist', category:'Healthcare', riskScore:20, netImpact:'positive', timeline:'10+ years',
+      headline:'Physical touch, real-time adaptation to patient response, and motivational coaching make physical therapy highly AI-resistant. Demand is growing with aging populations.',
+      tasksAutomated:['Exercise program generation','Progress tracking','Insurance documentation','Remote monitoring alerts'],
+      tasksEnhanced:['Manual therapy techniques','Complex injury rehabilitation','Patient motivation','Sports performance'],
+      skillsToLearn:['Wearable sensor integration','Telehealth PT delivery','Sports science technology','Dry needling certification'],
+      radar:{automation:20,augmentation:58,growth:85,wageStability:78,adaptability:75} },
+    { title:'EMT / Paramedic', category:'Healthcare', riskScore:12, netImpact:'positive', timeline:'10+ years',
+      headline:'Emergency medical response requires split-second physical intervention in unpredictable environments — among the most automation-resistant roles in existence.',
+      tasksAutomated:['Dispatch routing','Patient report transcription','Protocol lookup','Vitals documentation'],
+      tasksEnhanced:['Complex trauma assessment','Advanced airway management','Multi-patient triage','Crisis communication'],
+      skillsToLearn:['AI-assisted diagnostic tools in the field','Critical care transport','Advanced cardiac life support'],
+      radar:{automation:12,augmentation:50,growth:75,wageStability:68,adaptability:72} },
+    { title:'Lab Technician', category:'Healthcare', riskScore:62, netImpact:'mixed', timeline:'3–7 years',
+      headline:'AI automates sample analysis and pattern recognition in laboratory testing. Complex assay development, equipment calibration, and quality oversight remain human.',
+      tasksAutomated:['Sample processing','Standard test analysis','Result reporting','Inventory management'],
+      tasksEnhanced:['Complex assay development','Equipment troubleshooting','Quality control oversight','Research testing'],
+      skillsToLearn:['Automated lab platforms','Molecular diagnostics','Clinical data analytics','Lab information systems'],
+      radar:{automation:62,augmentation:55,growth:48,wageStability:58,adaptability:62} },
+    { title:'Veterinarian', category:'Healthcare', riskScore:25, netImpact:'positive', timeline:'8–15 years',
+      headline:'Veterinary care combines physical examination, surgery, and client communication in ways that remain AI-resistant. AI aids diagnostic imaging and drug dosing.',
+      tasksAutomated:['Diagnostic image analysis','Drug dosing calculations','Medical record documentation','Appointment scheduling'],
+      tasksEnhanced:['Complex surgery','Difficult diagnoses','Client communication','Exotic/specialist cases'],
+      skillsToLearn:['Veterinary telemedicine','AI diagnostic tools','Specialist certifications','Practice management software'],
+      radar:{automation:25,augmentation:65,growth:68,wageStability:80,adaptability:68} },
+    // LEGAL (expanded)
+    { title:'Judge', category:'Legal', riskScore:12, netImpact:'positive', timeline:'15+ years',
+      headline:'Judicial reasoning, constitutional interpretation, and the legitimacy of human-decided justice are constitutionally and ethically protected from AI replacement.',
+      tasksAutomated:['Case scheduling','Legal research assistance','Sentencing guideline lookup','Document review'],
+      tasksEnhanced:['Legal reasoning & interpretation','Oral argument assessment','Complex sentencing','Policy-shaping decisions'],
+      skillsToLearn:['AI-assisted legal research','Digital evidence evaluation','Algorithmic bias awareness'],
+      radar:{automation:12,augmentation:55,growth:45,wageStability:90,adaptability:50} },
+    { title:'Patent Attorney', category:'Legal', riskScore:40, netImpact:'mixed', timeline:'4–8 years',
+      headline:'AI searches prior art and drafts patent claims faster than humans, but claim strategy, prosecution, and litigation before patent offices require deep expertise.',
+      tasksAutomated:['Prior art searches','Initial claim drafting','Office action responses (standard)','Patent landscape analysis'],
+      tasksEnhanced:['Claim strategy','Complex prosecution','IP litigation','Portfolio strategy'],
+      skillsToLearn:['AI patent drafting tools','Emerging tech IP strategy','Inter partes review expertise','Global patent strategy'],
+      radar:{automation:40,augmentation:72,growth:55,wageStability:78,adaptability:65} },
+    // EDUCATION (expanded)
+    { title:'School Counselor', category:'Education', riskScore:18, netImpact:'positive', timeline:'10+ years',
+      headline:'Mental health support, crisis intervention, and long-term student relationships are deeply human roles that AI tools can only assist, never replace.',
+      tasksAutomated:['Schedule management','College application tracking','Resource referral matching','Progress report generation'],
+      tasksEnhanced:['Crisis counseling','Social-emotional support','Family communication','Career guidance'],
+      skillsToLearn:['Digital mental health tools','Trauma-informed practices','College admissions AI tools','Group counseling skills'],
+      radar:{automation:18,augmentation:52,growth:72,wageStability:65,adaptability:78} },
+    { title:'Corporate Trainer / L&D Specialist', category:'Education', riskScore:55, netImpact:'mixed', timeline:'3–6 years',
+      headline:'AI personalizes learning paths and generates training content at scale. Live facilitation, cultural transformation, and leadership coaching retain high value.',
+      tasksAutomated:['Course content generation','Quiz creation','Learning path personalization','Progress tracking'],
+      tasksEnhanced:['Leadership coaching','Culture change programs','Live facilitation','Needs assessment'],
+      skillsToLearn:['AI learning platforms (Coursera AI, Degreed)','Instructional design for AI-hybrid delivery','Organizational development'],
+      radar:{automation:55,augmentation:70,growth:55,wageStability:58,adaptability:72} },
+    { title:'Librarian', category:'Education', riskScore:52, netImpact:'mixed', timeline:'4–8 years',
+      headline:'AI transforms information retrieval and catalog management, but community programming, research guidance, and digital literacy instruction are evolving the role.',
+      tasksAutomated:['Catalog management','Reference lookups','Interlibrary loan processing','Database searching'],
+      tasksEnhanced:['Research guidance','Digital literacy instruction','Community programming','Archival curation'],
+      skillsToLearn:['AI-assisted research tools','Digital archive management','Data literacy instruction','Community engagement'],
+      radar:{automation:52,augmentation:60,growth:35,wageStability:58,adaptability:68} },
+    // CREATIVE (expanded)
+    { title:'Photographer', category:'Creative', riskScore:45, netImpact:'mixed', timeline:'3–7 years',
+      headline:'AI generates photorealistic images, threatening stock and commercial photography. Live event, editorial, and fine art photography retain irreplaceable human presence.',
+      tasksAutomated:['Basic photo editing','Background removal','Color grading presets','Stock image creation'],
+      tasksEnhanced:['Event & documentary photography','Creative direction','Client relationships','Fine art vision'],
+      skillsToLearn:['AI-enhanced editing workflows','Drone photography','Video hybrid skills','NFT/digital art licensing'],
+      radar:{automation:45,augmentation:65,growth:38,wageStability:45,adaptability:70} },
+    { title:'Interior Designer', category:'Creative', riskScore:38, netImpact:'positive', timeline:'4–8 years',
+      headline:'AI generates room visualizations and mood boards rapidly, but spatial judgment, client relationship management, and vendor coordination remain human-led.',
+      tasksAutomated:['Mood board generation','3D render drafts','Space planning options','Material sourcing searches'],
+      tasksEnhanced:['Client vision translation','Spatial storytelling','Contractor coordination','Bespoke specification'],
+      skillsToLearn:['AI visualization tools (Midjourney, Spline)','Sustainable materials expertise','AR/VR space planning','Biophilic design'],
+      radar:{automation:38,augmentation:75,growth:55,wageStability:58,adaptability:72} },
+    { title:'Copywriter', category:'Creative', riskScore:72, netImpact:'negative', timeline:'1–3 years',
+      headline:'AI generates high-volume marketing copy, ad headlines, and product descriptions at near-human quality. Strategic brand voice, emotional nuance, and long-form content command premiums.',
+      tasksAutomated:['Ad headline variations','Product descriptions','Email subject lines','Social media captions','SEO articles'],
+      tasksEnhanced:['Brand voice strategy','Emotionally complex narratives','Campaign concepting','Content strategy'],
+      skillsToLearn:['AI prompt strategy for brand voice','Content strategy','Brand architecture','Conversion rate optimization'],
+      radar:{automation:72,augmentation:60,growth:32,wageStability:40,adaptability:68} },
+    { title:'Animator / Motion Designer', category:'Creative', riskScore:50, netImpact:'mixed', timeline:'3–6 years',
+      headline:'AI generates motion assets and automates lip-syncing and rigging. Complex narrative animation, character performance, and art direction remain strongly human.',
+      tasksAutomated:['In-between frame generation','Lip-sync animation','Rigging assistance','Background generation'],
+      tasksEnhanced:['Character performance direction','Storytelling & narrative','Art direction','Complex visual effects'],
+      skillsToLearn:['AI animation tools (RunwayML, Kling)','Motion design strategy','Game engine animation','Virtual production'],
+      radar:{automation:50,augmentation:78,growth:50,wageStability:55,adaptability:75} },
+    { title:'Music Producer', category:'Creative', riskScore:42, netImpact:'mixed', timeline:'4–8 years',
+      headline:'AI generates instrumental tracks and suggests arrangements, but ear for culture, artist development, and the human element of recorded music protect top producers.',
+      tasksAutomated:['Backing track generation','Basic mixing presets','Sample curation','Chord progression suggestions'],
+      tasksEnhanced:['Artist development','Sound direction','Complex mixing & mastering','Live performance production'],
+      skillsToLearn:['AI music tools (Udio, Suno for ideation)','Spatial audio production','Sync licensing strategy','Artist branding'],
+      radar:{automation:42,augmentation:70,growth:45,wageStability:52,adaptability:72} },
+    { title:'Translator / Interpreter', category:'Creative', riskScore:75, netImpact:'negative', timeline:'2–4 years',
+      headline:'Neural machine translation now handles most document translation at near-human quality. Live diplomatic/legal interpretation, nuanced literary translation, and post-editing AI output remain human.',
+      tasksAutomated:['Document translation','Subtitle generation','Basic correspondence','Standard technical translation'],
+      tasksEnhanced:['Literary & creative translation','Simultaneous interpretation','Legal/diplomatic interpretation','Post-editing AI output'],
+      skillsToLearn:['Machine translation post-editing (MTPE)','AI-assisted CAT tools','Specialized domain expertise','Video remote interpreting'],
+      radar:{automation:75,augmentation:50,growth:25,wageStability:38,adaptability:62} },
+    { title:'PR Manager', category:'Creative', riskScore:42, netImpact:'mixed', timeline:'4–8 years',
+      headline:'AI drafts press releases and monitors media coverage at scale. Crisis communications, journalist relationships, and reputation strategy require human trust and judgment.',
+      tasksAutomated:['Press release drafting','Media monitoring','Coverage reports','Pitch email drafts'],
+      tasksEnhanced:['Crisis communications','Journalist relationships','Brand narrative strategy','Executive media coaching'],
+      skillsToLearn:['AI media monitoring platforms','Data-driven PR measurement','Social listening tools','Reputation risk management'],
+      radar:{automation:42,augmentation:72,growth:48,wageStability:55,adaptability:72} },
+    { title:'Fashion Designer', category:'Creative', riskScore:35, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI generates textile patterns and predicts trend cycles, but the cultural intuition, material tactility, and brand identity that define fashion remain irreducibly human.',
+      tasksAutomated:['Pattern generation','Trend forecasting reports','Colorway variations','Technical spec sheets'],
+      tasksEnhanced:['Creative vision & concept','Cultural trend interpretation','Fabric sourcing','Brand identity'],
+      skillsToLearn:['AI design tools (CLO 3D, Adobe Firefly)','Sustainable fashion tech','Digital-physical hybrid collections','Global supply chain agility'],
+      radar:{automation:35,augmentation:68,growth:52,wageStability:55,adaptability:72} },
+    // ENGINEERING & SCIENCE
+    { title:'Civil Engineer', category:'Engineering', riskScore:28, netImpact:'positive', timeline:'6–12 years',
+      headline:'AI accelerates structural analysis and simulation, but site judgment, regulatory navigation, and infrastructure leadership are strongly protected. Massive infrastructure investment is driving demand.',
+      tasksAutomated:['Structural load calculations','Simulation modeling','Cost estimation templates','CAD drafting'],
+      tasksEnhanced:['Design innovation','Stakeholder management','Complex site assessment','Sustainability integration'],
+      skillsToLearn:['AI-assisted structural design','Climate-resilient infrastructure','BIM/digital twin systems','Smart city planning'],
+      radar:{automation:28,augmentation:75,growth:78,wageStability:80,adaptability:72} },
+    { title:'Mechanical Engineer', category:'Engineering', riskScore:32, netImpact:'positive', timeline:'5–10 years',
+      headline:'Generative design AI proposes novel geometries and optimizes components, but hands-on testing, manufacturing knowledge, and system-level design judgment remain human.',
+      tasksAutomated:['FEA simulation setup','Standard part design','CAD documentation','Technical report drafting'],
+      tasksEnhanced:['Novel product design','Manufacturing process innovation','Cross-system integration','Reliability engineering'],
+      skillsToLearn:['Generative design (Autodesk Fusion)','Additive manufacturing','Digital twin simulation','Robotics integration'],
+      radar:{automation:32,augmentation:80,growth:70,wageStability:78,adaptability:75} },
+    { title:'Aerospace Engineer', category:'Engineering', riskScore:22, netImpact:'positive', timeline:'7–15 years',
+      headline:'AI accelerates aerodynamic simulation and fault detection, but the safety-critical nature of aerospace demands human accountability and systems judgment at every level.',
+      tasksAutomated:['CFD simulation runs','Structural analysis','Technical documentation','Systems monitoring'],
+      tasksEnhanced:['Vehicle architecture design','Safety analysis','Regulatory certification','Mission design'],
+      skillsToLearn:['AI-augmented simulation tools','Space systems engineering','Autonomous vehicle systems','Sustainability in aviation'],
+      radar:{automation:22,augmentation:82,growth:75,wageStability:88,adaptability:68} },
+    { title:'Environmental Engineer', category:'Engineering', riskScore:25, netImpact:'positive', timeline:'6–12 years',
+      headline:'AI models climate systems and environmental impact with increasing precision, but regulatory interpretation, field assessment, and community engagement are human-led.',
+      tasksAutomated:['Environmental impact modeling','Compliance reporting','Data collection analysis','Site assessment templates'],
+      tasksEnhanced:['Remediation design','Regulatory strategy','Community stakeholder engagement','Climate adaptation planning'],
+      skillsToLearn:['Climate risk modeling tools','Carbon accounting software','ESG regulatory expertise','Remote sensing & GIS'],
+      radar:{automation:25,augmentation:78,growth:82,wageStability:75,adaptability:78} },
+    { title:'Research Scientist', category:'Science', riskScore:22, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI accelerates literature review, hypothesis generation, and data analysis, but original inquiry, experimental design, and scientific judgment remain irreducibly human.',
+      tasksAutomated:['Literature review synthesis','Data analysis pipelines','Experiment logging','Grant report drafting'],
+      tasksEnhanced:['Novel hypothesis generation','Cross-disciplinary synthesis','Peer review & publication','Grant strategy'],
+      skillsToLearn:['AI research tools (Semantic Scholar, Elicit)','Large-scale data analysis','Computational methods','Science communication'],
+      radar:{automation:22,augmentation:88,growth:72,wageStability:75,adaptability:80} },
+    { title:'Economist', category:'Science', riskScore:38, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI processes massive economic datasets and builds predictive models, but causal reasoning, policy interpretation, and communicating economic risk to decision-makers are human strengths.',
+      tasksAutomated:['Data collection & cleaning','Standard econometric models','Literature reviews','Policy brief drafting'],
+      tasksEnhanced:['Causal inference research','Policy design','Public communication','Novel theoretical work'],
+      skillsToLearn:['AI-augmented econometrics','Causal machine learning','Climate economics','Behavioral economics integration'],
+      radar:{automation:38,augmentation:80,growth:60,wageStability:75,adaptability:75} },
+    { title:'Epidemiologist', category:'Science', riskScore:30, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI dramatically accelerates outbreak detection and disease modeling. Field investigation, policy translation, and public trust-building remain strongly human.',
+      tasksAutomated:['Surveillance data analysis','Outbreak pattern detection','Report generation','Modeling runs'],
+      tasksEnhanced:['Field investigation','Causal inference','Policy recommendation','Public health communication'],
+      skillsToLearn:['AI disease surveillance tools','Genomic epidemiology','Real-world evidence analysis','Global health systems'],
+      radar:{automation:30,augmentation:85,growth:75,wageStability:78,adaptability:78} },
+    { title:'Statistician', category:'Science', riskScore:45, netImpact:'mixed', timeline:'4–8 years',
+      headline:'AI automates standard statistical workflows, but experimental design, causal reasoning, and interpreting results for non-statistical audiences remain highly human.',
+      tasksAutomated:['Descriptive statistics','Standard hypothesis tests','Visualization generation','Data cleaning'],
+      tasksEnhanced:['Causal inference design','Bayesian analysis','Complex experimental design','Statistical communication'],
+      skillsToLearn:['Causal ML methods','Bayesian computation','Data visualization strategy','Interdisciplinary collaboration'],
+      radar:{automation:45,augmentation:78,growth:62,wageStability:72,adaptability:75} },
+    // TRADES (expanded)
+    { title:'Plumber', category:'Trades', riskScore:14, netImpact:'positive', timeline:'10+ years',
+      headline:'Physical dexterity in confined spaces, problem diagnosis under uncertainty, and licensed work requirements make plumbing highly resilient to automation.',
+      tasksAutomated:['Job quoting tools','Parts ordering','Scheduling','Inspection documentation'],
+      tasksEnhanced:['Complex system diagnosis','Large-scale commercial installs','Code compliance work','Emergency repairs'],
+      skillsToLearn:['Smart home plumbing systems','Water-efficient fixture tech','Business management software','Hydronics certification'],
+      radar:{automation:14,augmentation:38,growth:78,wageStability:78,adaptability:75} },
+    { title:'HVAC Technician', category:'Trades', riskScore:18, netImpact:'positive', timeline:'10+ years',
+      headline:'Smart building systems create new diagnostics work while physical installation and repair remain fully human. Energy efficiency mandates are expanding demand strongly.',
+      tasksAutomated:['System performance monitoring','Fault alerts','Service scheduling','Basic diagnostic queries'],
+      tasksEnhanced:['Complex system repair','Energy efficiency optimization','Commercial installs','Smart building integration'],
+      skillsToLearn:['Smart HVAC systems','Heat pump technology','Building automation systems','Refrigerant transition (R-32, R-454B)'],
+      radar:{automation:18,augmentation:45,growth:80,wageStability:75,adaptability:75} },
+    { title:'Auto Mechanic', category:'Trades', riskScore:22, netImpact:'positive', timeline:'8–15 years',
+      headline:'AI-powered diagnostics assist fault identification, but physical repair, component replacement, and EV/hybrid expertise are in growing demand.',
+      tasksAutomated:['Fault code diagnosis','Repair time estimation','Parts ordering','Service records documentation'],
+      tasksEnhanced:['Complex mechanical repair','EV/hybrid system service','Customer communication','Advanced diagnostics'],
+      skillsToLearn:['EV battery systems','Advanced driver-assistance systems (ADAS)','Connected vehicle diagnostics','High-voltage safety certification'],
+      radar:{automation:22,augmentation:52,growth:72,wageStability:68,adaptability:75} },
+    { title:'Welder', category:'Trades', riskScore:32, netImpact:'mixed', timeline:'5–10 years',
+      headline:'Robotic welding automates high-volume repetitive joints in manufacturing. Custom fabrication, field welding, and specialty materials remain skilled human work.',
+      tasksAutomated:['Repetitive production welding','Quality inspection (vision AI)','Standard joint prep'],
+      tasksEnhanced:['Custom fabrication','Structural field welding','Specialty alloy welding','Welding robot programming'],
+      skillsToLearn:['Welding robot programming & oversight','Specialty certifications (underwater, pipeline)','CAD for fabrication'],
+      radar:{automation:32,augmentation:42,growth:60,wageStability:65,adaptability:68} },
+    { title:'Farmer / Agricultural Worker', category:'Trades', riskScore:38, netImpact:'mixed', timeline:'5–12 years',
+      headline:'Precision agriculture AI optimizes planting, irrigation, and harvesting, but land stewardship, crop disease judgment, and adaptive decision-making remain human.',
+      tasksAutomated:['Crop monitoring (drones)','Irrigation scheduling','Yield prediction','Pest detection'],
+      tasksEnhanced:['Soil health management','Complex pest & disease response','Sustainability certification','Community farming relationships'],
+      skillsToLearn:['Precision agriculture platforms','Drone operation','Regenerative agriculture','Agri-fintech tools'],
+      radar:{automation:38,augmentation:55,growth:55,wageStability:50,adaptability:65} },
+    // OPERATIONS (expanded)
+    { title:'Real Estate Agent', category:'Operations', riskScore:55, netImpact:'mixed', timeline:'3–7 years',
+      headline:'AI handles property search, valuation, and documentation. The emotional intelligence, local market knowledge, and negotiation skill in high-stakes transactions remain human.',
+      tasksAutomated:['Property search & matching','Valuation analysis','Document preparation','Market report drafting'],
+      tasksEnhanced:['Client trust & advisory','Negotiation','Local market expertise','Investment property strategy'],
+      skillsToLearn:['AI property valuation tools','Virtual tour technology','Investment analysis','PropTech platforms'],
+      radar:{automation:55,augmentation:65,growth:48,wageStability:52,adaptability:65} },
+    { title:'Event Planner', category:'Operations', riskScore:35, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI handles venue search, budget modeling, and vendor coordination. Creative vision, real-time problem-solving, and vendor relationships are protected.',
+      tasksAutomated:['Venue research','Budget spreadsheets','Vendor outreach templates','Guest list management'],
+      tasksEnhanced:['Creative concept development','On-site coordination','Client vision translation','Vendor relationship building'],
+      skillsToLearn:['Event tech platforms','AI-assisted design tools','Hybrid event production','Sustainability in events'],
+      radar:{automation:35,augmentation:65,growth:58,wageStability:55,adaptability:72} },
+    { title:'Business Analyst', category:'Operations', riskScore:55, netImpact:'mixed', timeline:'3–6 years',
+      headline:'AI automates data gathering and standard reporting, freeing analysts to focus on strategic interpretation. Demand is growing for analysts who bridge AI and business decision-making.',
+      tasksAutomated:['Data collection','Standard dashboards','Requirements templating','Meeting notes & action items'],
+      tasksEnhanced:['Strategic insight synthesis','Stakeholder facilitation','Change management','Process redesign'],
+      skillsToLearn:['AI analytics tools (Power BI AI, Tableau)','Process mining','SQL & Python basics','Change management certification'],
+      radar:{automation:55,augmentation:78,growth:62,wageStability:68,adaptability:78} },
+    { title:'Social Media Manager', category:'Operations', riskScore:62, netImpact:'mixed', timeline:'2–4 years',
+      headline:'AI generates content drafts, schedules posts, and analyzes performance metrics. Platform strategy, community management, and brand voice protection remain human.',
+      tasksAutomated:['Post drafting','Hashtag research','Performance reporting','Competitor monitoring'],
+      tasksEnhanced:['Community building','Brand voice curation','Crisis response','Influencer strategy'],
+      skillsToLearn:['AI content tools (Canva AI, Copy.ai)','Social analytics platforms','Community management','Creator economy strategy'],
+      radar:{automation:62,augmentation:65,growth:45,wageStability:48,adaptability:72} },
+    { title:'Operations Manager', category:'Operations', riskScore:38, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI optimizes processes and surfaces operational inefficiencies, but cross-functional leadership, change management, and people operations are AI-complementary.',
+      tasksAutomated:['KPI reporting','Process documentation','Scheduling optimization','Inventory monitoring'],
+      tasksEnhanced:['Process redesign','Team leadership','Vendor strategy','Organizational change management'],
+      skillsToLearn:['Process intelligence tools','Lean + AI workflow design','People analytics','ERP platforms'],
+      radar:{automation:38,augmentation:75,growth:62,wageStability:70,adaptability:78} },
+    // ADMINISTRATIVE (expanded)
+    { title:'Travel Agent', category:'Administrative', riskScore:78, netImpact:'negative', timeline:'2–4 years',
+      headline:'AI travel platforms handle most standard booking and itinerary planning. Luxury travel, complex multi-destination logistics, and high-touch service retain human value.',
+      tasksAutomated:['Flight & hotel search','Standard itinerary building','Price comparison','Booking confirmations'],
+      tasksEnhanced:['Luxury & bespoke travel','Complex visa & logistics','Travel emergency support','Corporate travel management'],
+      skillsToLearn:['Luxury travel specialization','Corporate travel management','Destination expertise','Travel risk management'],
+      radar:{automation:78,augmentation:40,growth:22,wageStability:30,adaptability:55} },
+    { title:'Executive Assistant', category:'Administrative', riskScore:58, netImpact:'mixed', timeline:'3–6 years',
+      headline:'AI handles scheduling, email management, and document drafting. EAs who act as strategic gatekeepers, project leads, and trusted advisors to senior leaders are resilient.',
+      tasksAutomated:['Calendar scheduling','Email drafting','Travel booking','Meeting notes','Research summaries'],
+      tasksEnhanced:['Executive priorities management','Stakeholder relations','Strategic project support','Sensitive communications'],
+      skillsToLearn:['AI productivity suites (Microsoft 365 Copilot)','Project management','Executive communication','Strategic thinking'],
+      radar:{automation:58,augmentation:58,growth:35,wageStability:52,adaptability:68} },
+    // GOVERNMENT / POLICY
+    { title:'Policy Analyst', category:'Government', riskScore:35, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI processes legislative data and models policy impacts, but political judgment, stakeholder negotiation, and translating evidence into actionable policy remain human.',
+      tasksAutomated:['Legislative database research','Economic impact modeling','Policy brief drafting','Literature reviews'],
+      tasksEnhanced:['Political strategy','Stakeholder coalition building','Complex regulatory design','Public communication'],
+      skillsToLearn:['Policy simulation tools','Quantitative policy analysis','Data storytelling','Regulatory technology'],
+      radar:{automation:35,augmentation:72,growth:55,wageStability:65,adaptability:72} },
+    { title:'Urban Planner', category:'Government', riskScore:28, netImpact:'positive', timeline:'6–12 years',
+      headline:'AI models urban systems and optimizes infrastructure layout, but community engagement, political navigation, and equitable design remain deeply human responsibilities.',
+      tasksAutomated:['Land use modeling','Traffic simulation','Zoning analysis','Environmental impact modeling'],
+      tasksEnhanced:['Community participatory planning','Equity analysis','Political stakeholder management','Long-range vision'],
+      skillsToLearn:['Smart city platforms','Climate resilience planning','GIS & spatial analysis','Community engagement methods'],
+      radar:{automation:28,augmentation:75,growth:65,wageStability:68,adaptability:72} },
+    // NONPROFIT / MEDIA
+    { title:'Nonprofit Manager', category:'Social Services', riskScore:25, netImpact:'positive', timeline:'7–15 years',
+      headline:'Community trust, donor relationships, mission stewardship, and adaptive leadership in resource-constrained environments are deeply human and AI-resilient.',
+      tasksAutomated:['Grant report drafting','Donor database management','Impact metrics reporting','Social media content'],
+      tasksEnhanced:['Donor relationship cultivation','Program innovation','Community advocacy','Board governance'],
+      skillsToLearn:['AI grant-writing assistance','CRM platforms for nonprofits','Impact measurement frameworks','Social enterprise strategy'],
+      radar:{automation:25,augmentation:60,growth:62,wageStability:55,adaptability:75} },
+    { title:'Broadcast Journalist / Anchor', category:'Creative', riskScore:48, netImpact:'mixed', timeline:'4–8 years',
+      headline:'AI generates news scripts and synthetic anchors for routine segments. On-the-ground reporting, investigative work, and trusted public presence remain human domains.',
+      tasksAutomated:['Script drafting','Sports/finance updates','Closed captioning','Archive research'],
+      tasksEnhanced:['Breaking news reporting','Investigative journalism','Audience trust','Interview craft'],
+      skillsToLearn:['Multimedia journalism','Data journalism','On-camera authority','AI content verification skills'],
+      radar:{automation:48,augmentation:60,growth:35,wageStability:45,adaptability:65} },
+    // TECHNOLOGY (continued)
+    { title:'Data Engineer', category:'Technology', riskScore:38, netImpact:'positive', timeline:'3–7 years',
+      headline:'AI automates pipeline monitoring and schema inference, but architecting reliable data infrastructure at scale requires deep engineering judgment that remains scarce.',
+      tasksAutomated:['Pipeline monitoring','Schema documentation','Data quality checks','Boilerplate ETL code'],
+      tasksEnhanced:['Data architecture design','Real-time streaming systems','Data governance strategy','Cross-team data contracts'],
+      skillsToLearn:['AI-assisted pipeline tools (dbt, Airflow AI)','Streaming data (Kafka, Flink)','Data lakehouse architecture','Data mesh patterns'],
+      radar:{automation:38,augmentation:82,growth:88,wageStability:90,adaptability:80} },
+    { title:'Robotics Engineer', category:'Technology', riskScore:18, netImpact:'positive', timeline:'5–10 years',
+      headline:'Robotics engineers are the people building the automation — among the highest-growth roles of the decade as physical AI expands into manufacturing, logistics, and healthcare.',
+      tasksAutomated:['Simulation environment setup','Standard controller tuning','Test log analysis','Documentation'],
+      tasksEnhanced:['Novel robot design','Sensor integration','Physical AI research','Safety validation'],
+      skillsToLearn:['Foundation models for robotics','ROS2 & simulation','Reinforcement learning for control','Human-robot interaction design'],
+      radar:{automation:18,augmentation:90,growth:95,wageStability:95,adaptability:85} },
+    { title:'Game Developer', category:'Technology', riskScore:40, netImpact:'mixed', timeline:'3–7 years',
+      headline:'AI generates game assets, NPC dialogue, and procedural levels, but core gameplay systems design, creative direction, and player psychology remain human strengths.',
+      tasksAutomated:['Asset generation (textures, sound)','NPC behavior scripting','Localization','Bug detection','Procedural content'],
+      tasksEnhanced:['Gameplay design','Narrative systems','Engine architecture','Player experience research'],
+      skillsToLearn:['AI-native game engines (Unity AI, Unreal Muse)','Procedural generation','Generative AI asset pipelines','Live service design'],
+      radar:{automation:40,augmentation:80,growth:60,wageStability:65,adaptability:78} },
+    { title:'Information Security Manager (CISO)', category:'Technology', riskScore:20, netImpact:'positive', timeline:'6–12 years',
+      headline:'Cyber threats are growing as fast as AI defenses. CISOs who translate technical risk into board-level strategy and regulatory compliance are among the most in-demand leaders globally.',
+      tasksAutomated:['Threat log analysis','Compliance report drafting','Vulnerability scanning','Patch prioritization'],
+      tasksEnhanced:['Enterprise security strategy','Board risk communication','Incident leadership','Regulatory negotiation'],
+      skillsToLearn:['AI threat intelligence platforms','Cloud security governance','Zero-trust strategy','Security AI ethics'],
+      radar:{automation:20,augmentation:85,growth:92,wageStability:95,adaptability:78} },
+    { title:'Blockchain / Web3 Developer', category:'Technology', riskScore:30, netImpact:'positive', timeline:'4–8 years',
+      headline:'Demand for decentralized infrastructure remains niche but resilient. AI assists smart contract auditing, but cryptographic and protocol design expertise is scarce and hard to automate.',
+      tasksAutomated:['Smart contract boilerplate','Security audit first passes','Documentation','Test generation'],
+      tasksEnhanced:['Protocol design','Tokenomics architecture','Cross-chain interoperability','DeFi systems engineering'],
+      skillsToLearn:['Smart contract security auditing','Zero-knowledge proofs','AI-blockchain integration','Layer 2 architecture'],
+      radar:{automation:30,augmentation:68,growth:58,wageStability:72,adaptability:72} },
+    { title:'Software Architect', category:'Technology', riskScore:20, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI generates code but cannot design the systems that contain it. Architects who define APIs, data flows, scalability patterns, and organizational boundaries are irreplaceable.',
+      tasksAutomated:['Architecture diagram drafts','Standard design pattern selection','Documentation generation','Code review tooling'],
+      tasksEnhanced:['System design decisions','Technology strategy','Cross-team technical leadership','Scalability & reliability planning'],
+      skillsToLearn:['AI-native system design','Event-driven architecture','Platform engineering leadership','Technical due diligence'],
+      radar:{automation:20,augmentation:88,growth:82,wageStability:92,adaptability:82} },
+    // FINANCE (continued)
+    { title:'Loan Officer / Mortgage Broker', category:'Finance', riskScore:72, netImpact:'negative', timeline:'2–5 years',
+      headline:'AI underwrites standard residential mortgages with greater speed and less bias than humans. Complex commercial loans and non-standard borrower situations retain human officers.',
+      tasksAutomated:['Standard credit assessment','Application processing','Document verification','Rate comparison','Compliance checks'],
+      tasksEnhanced:['Complex commercial lending','Non-QM borrower guidance','Relationship banking','Construction & bridge loans'],
+      skillsToLearn:['Complex commercial credit','Private lending markets','Relationship-based advisory','Non-QM specialization'],
+      radar:{automation:72,augmentation:45,growth:28,wageStability:38,adaptability:55} },
+    { title:'Quantitative Analyst (Quant)', category:'Finance', riskScore:30, netImpact:'positive', timeline:'5–10 years',
+      headline:'Quants who build and govern AI trading models are more valuable than ever. AI augments research capacity but cannot replace the mathematical creativity and model risk judgment.',
+      tasksAutomated:['Back-testing pipelines','Data cleaning','Standard factor analysis','Report generation'],
+      tasksEnhanced:['Novel strategy research','Model risk governance','Alternative data analysis','Real-time trading systems'],
+      skillsToLearn:['Deep learning for finance','Reinforcement learning for trading','Alternative data (satellite, NLP)','Quantum finance research'],
+      radar:{automation:30,augmentation:90,growth:72,wageStability:92,adaptability:78} },
+    { title:'Wealth Manager', category:'Finance', riskScore:42, netImpact:'mixed', timeline:'5–10 years',
+      headline:'AI handles portfolio analytics and rebalancing; human wealth managers differentiate on life coaching, intergenerational wealth strategy, and trusted relationships with UHNW clients.',
+      tasksAutomated:['Portfolio reporting','Rebalancing execution','Tax-loss harvesting','Client meeting prep'],
+      tasksEnhanced:['Trust & estate strategy','Multi-generational planning','Philanthropic advisory','Complex family governance'],
+      skillsToLearn:['AI wealth platforms','Private markets expertise','UHNW relationship skills','Impact investing'],
+      radar:{automation:42,augmentation:70,growth:55,wageStability:75,adaptability:72} },
+    { title:'Risk Manager', category:'Finance', riskScore:40, netImpact:'mixed', timeline:'5–10 years',
+      headline:'AI dramatically expands risk sensing capabilities, but judgment calls on systemic, geopolitical, and model risks require human accountability that regulators and boards demand.',
+      tasksAutomated:['Market risk calculation','VaR modeling','Data aggregation','Routine stress tests'],
+      tasksEnhanced:['Systemic risk assessment','Model risk governance','Regulatory dialogue','Board risk communication'],
+      skillsToLearn:['AI model risk management','Climate & ESG risk frameworks','Algorithmic risk auditing','Scenario design'],
+      radar:{automation:40,augmentation:78,growth:62,wageStability:78,adaptability:72} },
+    { title:'Stockbroker / Securities Trader', category:'Finance', riskScore:68, netImpact:'negative', timeline:'3–7 years',
+      headline:'Algorithmic and AI-driven trading has displaced most discretionary execution trading. Relationship-driven institutional sales and exotic products retain human roles.',
+      tasksAutomated:['Execution trading','Market analysis','Order routing','Portfolio monitoring','Client reporting'],
+      tasksEnhanced:['Institutional client relationships','Exotic derivatives structuring','Prime brokerage advisory'],
+      skillsToLearn:['Algorithmic trading oversight','Quantitative methods','Institutional sales skills','Derivatives expertise'],
+      radar:{automation:68,augmentation:48,growth:30,wageStability:45,adaptability:55} },
+    // HEALTHCARE (continued)
+    { title:'Occupational Therapist', category:'Healthcare', riskScore:18, netImpact:'positive', timeline:'10+ years',
+      headline:'OTs help patients regain meaningful daily function through deeply personalized, hands-on intervention — among the most human-centric and automation-resistant healthcare roles.',
+      tasksAutomated:['Treatment plan templates','Progress documentation','Resource library matching','Remote monitoring alerts'],
+      tasksEnhanced:['Adaptive equipment assessment','Cognitive rehabilitation','Workplace ergonomics consultation','Pediatric development'],
+      skillsToLearn:['Assistive technology integration','Telehealth OT delivery','Cognitive AI rehabilitation tools','Sensory processing expertise'],
+      radar:{automation:18,augmentation:58,growth:85,wageStability:78,adaptability:78} },
+    { title:'Speech-Language Pathologist', category:'Healthcare', riskScore:22, netImpact:'positive', timeline:'8–15 years',
+      headline:'AI assists with speech analysis and remote monitoring, but therapeutic rapport, adaptive treatment, and complex communication disorder management require human expertise.',
+      tasksAutomated:['Speech pattern analysis','Progress report generation','Remote session monitoring','Exercise tracking'],
+      tasksEnhanced:['Complex communication disorders','Swallowing therapy','Autism spectrum communication','Pediatric language development'],
+      skillsToLearn:['AI speech analysis tools','Augmentative & alternative communication (AAC)','Telepractice delivery','Voice disorder technology'],
+      radar:{automation:22,augmentation:60,growth:82,wageStability:80,adaptability:75} },
+    { title:'Dental Hygienist', category:'Healthcare', riskScore:28, netImpact:'positive', timeline:'8–15 years',
+      headline:'AI identifies cavities from X-rays, but hands-on cleaning, patient education, and periodontal assessment require physical presence and interpersonal skill.',
+      tasksAutomated:['X-ray cavity detection','Appointment scheduling','Insurance pre-authorization','Patient recall reminders'],
+      tasksEnhanced:['Periodontal therapy','Patient oral health education','Complex scaling & root planing','Oral cancer screening'],
+      skillsToLearn:['AI diagnostic imaging literacy','Periodontal disease specialization','Laser dental therapy','Oral systemic health connections'],
+      radar:{automation:28,augmentation:55,growth:70,wageStability:72,adaptability:72} },
+    { title:'Nurse Practitioner / Physician Assistant', category:'Healthcare', riskScore:22, netImpact:'positive', timeline:'7–15 years',
+      headline:'Advanced practice roles are growing rapidly to fill physician shortages. AI assists clinical decision-making but advanced practitioners\' diagnostic autonomy is expanding, not shrinking.',
+      tasksAutomated:['Routine prescription refills','Clinical documentation','Patient intake triage','Standard protocol follow-up'],
+      tasksEnhanced:['Primary care management','Complex chronic disease','Procedural skills','Independent clinical judgment'],
+      skillsToLearn:['AI clinical decision support','Telehealth primary care','Full practice authority navigation','Specialty certification'],
+      radar:{automation:22,augmentation:75,growth:90,wageStability:88,adaptability:78} },
+    { title:'Nutritionist / Dietitian', category:'Healthcare', riskScore:40, netImpact:'mixed', timeline:'5–10 years',
+      headline:'AI personalizes dietary recommendations using wearable data, but motivational coaching, eating disorder management, and complex medical nutrition therapy remain human.',
+      tasksAutomated:['Meal plan generation','Nutrient analysis','Recipe suggestions','Food diary analysis'],
+      tasksEnhanced:['Eating disorder treatment','Medical nutrition therapy','Behavioral change coaching','Cultural food adaptation'],
+      skillsToLearn:['Precision nutrition technology','Gut microbiome science','Telehealth nutrition delivery','Diabetes care and education'],
+      radar:{automation:40,augmentation:62,growth:65,wageStability:62,adaptability:72} },
+    { title:'Healthcare Administrator', category:'Healthcare', riskScore:50, netImpact:'mixed', timeline:'4–8 years',
+      headline:'AI optimizes scheduling, billing, and capacity planning, but strategic leadership, regulatory navigation, and staff management require seasoned human administrators.',
+      tasksAutomated:['Billing & coding oversight','Staff scheduling','Compliance reporting','Patient flow analytics'],
+      tasksEnhanced:['Strategic planning','Regulatory strategy','Physician relations','Quality improvement leadership'],
+      skillsToLearn:['Healthcare AI platforms','Value-based care models','Population health management','Health systems leadership'],
+      radar:{automation:50,augmentation:70,growth:58,wageStability:68,adaptability:72} },
+    { title:'Mental Health Counselor', category:'Healthcare', riskScore:20, netImpact:'positive', timeline:'10+ years',
+      headline:'AI mental health apps provide supplemental support, but therapeutic alliance, crisis intervention, and complex trauma treatment remain irreplaceably human. Demand is surging.',
+      tasksAutomated:['Session note transcription','Psychoeducation content','Appointment scheduling','Progress metric tracking'],
+      tasksEnhanced:['Trauma-focused therapy','Group therapy facilitation','Crisis counseling','Family systems intervention'],
+      skillsToLearn:['Digital mental health tools','Trauma-informed approaches (EMDR, CPT)','Telehealth counseling','AI companion integration strategy'],
+      radar:{automation:20,augmentation:55,growth:88,wageStability:72,adaptability:78} },
+    // LEGAL (continued)
+    { title:'Corporate Attorney', category:'Legal', riskScore:42, netImpact:'mixed', timeline:'4–8 years',
+      headline:'AI handles M&A due diligence and contract review at scale, compressing associate roles. Senior corporate counsel who structure deals and advise boards are well-positioned.',
+      tasksAutomated:['Due diligence review','Contract redlining','NDA processing','Board minutes drafting'],
+      tasksEnhanced:['Deal structuring & negotiation','Board advisory','Regulatory strategy','Cross-border transactions'],
+      skillsToLearn:['AI legal due diligence tools','ESG compliance law','Cross-border M&A','Data privacy law (GDPR, CCPA)'],
+      radar:{automation:42,augmentation:72,growth:52,wageStability:78,adaptability:65} },
+    { title:'Contract Manager', category:'Legal', riskScore:68, netImpact:'negative', timeline:'2–5 years',
+      headline:'AI extracts, analyzes, and tracks contract obligations with high accuracy. Contract managers are evolving toward strategic commercial advisory and relationship roles.',
+      tasksAutomated:['Contract data extraction','Obligation tracking','Renewal alerts','Standard clause review','Compliance monitoring'],
+      tasksEnhanced:['Complex negotiation','Strategic vendor relationships','Dispute resolution','Commercial strategy'],
+      skillsToLearn:['AI contract lifecycle platforms (Ironclad, Icertis)','Commercial negotiation','Procurement strategy','Legal tech literacy'],
+      radar:{automation:68,augmentation:55,growth:35,wageStability:48,adaptability:62} },
+    // EDUCATION (continued)
+    { title:'Curriculum Developer', category:'Education', riskScore:55, netImpact:'mixed', timeline:'3–7 years',
+      headline:'AI generates learning content drafts and adaptive assessments, but learning science expertise, cultural relevance, and pedagogical design remain human-led.',
+      tasksAutomated:['Content drafting','Quiz generation','Standard lesson frameworks','Translation & localization'],
+      tasksEnhanced:['Learning science application','Cultural adaptation','Competency framework design','Assessment validity'],
+      skillsToLearn:['AI-assisted instructional design','Competency-based education','Learning analytics','Universal Design for Learning (UDL)'],
+      radar:{automation:55,augmentation:68,growth:48,wageStability:55,adaptability:72} },
+    { title:'Special Education Teacher', category:'Education', riskScore:15, netImpact:'positive', timeline:'10+ years',
+      headline:'Individualized support, sensory adaptations, behavioral intervention, and family partnership make special education among the most human and automation-resistant teaching roles.',
+      tasksAutomated:['IEP documentation drafting','Progress tracking','Adaptive material generation','Scheduling'],
+      tasksEnhanced:['Individualized behavior support','Sensory integration strategies','Family collaboration','Transition planning'],
+      skillsToLearn:['AI assistive technology tools','Applied behavior analysis (ABA)','Augmentative communication devices','Trauma-informed education'],
+      radar:{automation:15,augmentation:60,growth:80,wageStability:65,adaptability:80} },
+    // CREATIVE (continued)
+    { title:'Sound Engineer / Audio Producer', category:'Creative', riskScore:45, netImpact:'mixed', timeline:'4–8 years',
+      headline:'AI masters audio and removes noise efficiently, but studio expertise, artistic ear, and artist collaboration in live and recorded production remain human.',
+      tasksAutomated:['Noise reduction & cleanup','Automated mastering','Podcast editing','Standard EQ/compression presets'],
+      tasksEnhanced:['Live concert mixing','Complex studio recording','Spatial audio design','Film/TV score mixing'],
+      skillsToLearn:['Spatial/Dolby Atmos mixing','AI mastering tools (LANDR for ideation)','Immersive audio production','Streaming platform optimization'],
+      radar:{automation:45,augmentation:70,growth:45,wageStability:52,adaptability:72} },
+    { title:'Game Designer', category:'Creative', riskScore:32, netImpact:'positive', timeline:'4–8 years',
+      headline:'AI generates content and playtests variations at scale, but core gameplay loop design, player psychology, and the creative vision for an experience remain human territory.',
+      tasksAutomated:['Content variation testing','Level geometry generation','Balance data analysis','NPC dialogue branching'],
+      tasksEnhanced:['Core game loop design','Player motivation systems','Narrative architecture','Monetization ethics'],
+      skillsToLearn:['AI-assisted rapid prototyping','Player behavior analytics','Procedural design systems','Social & live service design'],
+      radar:{automation:32,augmentation:80,growth:62,wageStability:62,adaptability:78} },
+    { title:'Content Creator / Influencer', category:'Creative', riskScore:38, netImpact:'mixed', timeline:'3–7 years',
+      headline:'AI floods platforms with synthetic content, making authentic voice and parasocial trust more valuable than ever — but mid-tier commodity creators face significant pressure.',
+      tasksAutomated:['Caption writing','Thumbnail variants','Video clipping & repurposing','SEO keyword research'],
+      tasksEnhanced:['Authentic personal branding','Community relationship','Niche expertise','Brand partnership strategy'],
+      skillsToLearn:['AI video editing tools','Multi-platform distribution strategy','Creator economy monetization','Brand deal negotiation'],
+      radar:{automation:38,augmentation:72,growth:55,wageStability:42,adaptability:80} },
+    { title:'Art Director', category:'Creative', riskScore:30, netImpact:'positive', timeline:'5–10 years',
+      headline:'Art directors who orchestrate visual language across campaigns, brands, and productions are growing in value as AI handles execution — the vision layer remains scarce.',
+      tasksAutomated:['Asset creation','Mood board drafts','Layout iterations','Brief summaries'],
+      tasksEnhanced:['Visual language strategy','Cross-medium campaign direction','Brand system governance','Creative team leadership'],
+      skillsToLearn:['AI creative direction strategy','Generative AI workflow integration','Brand systems thinking','Experiential & spatial design'],
+      radar:{automation:30,augmentation:82,growth:58,wageStability:68,adaptability:78} },
+    { title:'Illustrator', category:'Creative', riskScore:58, netImpact:'mixed', timeline:'2–5 years',
+      headline:'AI image generators have compressed demand for commodity stock illustration. Distinctive visual style, narrative illustration, and client-specific character work retain value.',
+      tasksAutomated:['Stock illustration','Background generation','Color variant production','Reference gathering'],
+      tasksEnhanced:['Distinctive style development','Character & IP creation','Editorial illustration','Children\'s book storytelling'],
+      skillsToLearn:['AI-as-reference-tool workflows','IP development & licensing','Animation for illustrators','Brand illustration identity'],
+      radar:{automation:58,augmentation:62,growth:35,wageStability:42,adaptability:70} },
+    { title:'Brand Strategist', category:'Creative', riskScore:28, netImpact:'positive', timeline:'5–10 years',
+      headline:'Brand strategy sits at the intersection of culture, psychology, and business — a synthesis role where AI provides data but human intuition drives the insight.',
+      tasksAutomated:['Brand audit data collection','Competitor analysis reports','Survey analysis','Positioning map drafts'],
+      tasksEnhanced:['Brand positioning & naming','Cultural insight synthesis','Brand architecture','Executive workshop facilitation'],
+      skillsToLearn:['AI-assisted consumer insight tools','Cultural semiotics','Brand equity measurement','Futures thinking & scenario planning'],
+      radar:{automation:28,augmentation:80,growth:60,wageStability:68,adaptability:78} },
+    // ENGINEERING (continued)
+    { title:'Chemical Engineer', category:'Engineering', riskScore:30, netImpact:'positive', timeline:'5–12 years',
+      headline:'AI accelerates molecular simulation and process optimization, but designing and scaling chemical processes safely in physical plants requires irreplaceable engineering judgment.',
+      tasksAutomated:['Process simulation','Reaction optimization modeling','Safety compliance checks','Technical documentation'],
+      tasksEnhanced:['Novel process design','Scale-up engineering','Safety leadership','Green chemistry innovation'],
+      skillsToLearn:['AI-driven molecular design (AlphaFold-adjacent tools)','Green chemistry','Carbon capture process engineering','Biomanufacturing'],
+      radar:{automation:30,augmentation:80,growth:68,wageStability:80,adaptability:72} },
+    { title:'Electrical Engineer', category:'Engineering', riskScore:28, netImpact:'positive', timeline:'5–12 years',
+      headline:'AI optimizes circuit design and power systems modeling, but hands-on design for safety-critical systems, hardware validation, and regulatory certification remain human.',
+      tasksAutomated:['Circuit simulation','PCB layout drafts','Standard compliance testing','Technical documentation'],
+      tasksEnhanced:['Power systems architecture','Embedded systems design','Hardware safety validation','EV/grid integration'],
+      skillsToLearn:['AI-assisted EDA tools','EV power electronics','Smart grid engineering','RF & wireless systems'],
+      radar:{automation:28,augmentation:80,growth:78,wageStability:82,adaptability:75} },
+    { title:'Biomedical Engineer', category:'Engineering', riskScore:22, netImpact:'positive', timeline:'6–12 years',
+      headline:'At the frontier of AI and medicine, biomedical engineers who integrate machine learning into diagnostic devices and drug delivery systems are among the highest-growth roles of the decade.',
+      tasksAutomated:['Device simulation modeling','Standard regulatory documentation','Literature review','Test data analysis'],
+      tasksEnhanced:['Medical device design','Clinical trial engineering','AI diagnostic integration','Regulatory strategy'],
+      skillsToLearn:['AI medical device development (FDA SaMD pathway)','Neural interfaces','Wearable biosensor design','Bioinformatics'],
+      radar:{automation:22,augmentation:88,growth:88,wageStability:88,adaptability:82} },
+    { title:'Industrial Engineer', category:'Engineering', riskScore:35, netImpact:'positive', timeline:'4–8 years',
+      headline:'Industrial engineers who design human-AI-robot workflows are at the center of the manufacturing transformation. AI replaces routine time-motion study but elevates strategic redesign.',
+      tasksAutomated:['Time-motion studies','Standard process documentation','Simulation model runs','Efficiency reports'],
+      tasksEnhanced:['Human-robot workflow design','Factory of the future strategy','Supply chain re-engineering','Lean + AI integration'],
+      skillsToLearn:['Digital twin simulation','Collaborative robotics (cobots)','AI-enhanced lean methods','Smart factory design'],
+      radar:{automation:35,augmentation:82,growth:75,wageStability:78,adaptability:78} },
+    // SCIENCE (continued)
+    { title:'Data Analyst', category:'Technology', riskScore:58, netImpact:'mixed', timeline:'2–5 years',
+      headline:'AI automates dashboard creation and standard reporting, shifting the analyst role toward interpretation, strategic framing, and business partnership.',
+      tasksAutomated:['Dashboard creation','Standard reports','Data cleaning','Trend summaries','Ad hoc queries'],
+      tasksEnhanced:['Strategic insight framing','Business storytelling','Cross-functional analysis','Experiment design'],
+      skillsToLearn:['AI analytics tools (Tableau AI, Power BI Copilot)','Causal analysis','Business acumen','Python/SQL'],
+      radar:{automation:58,augmentation:72,growth:55,wageStability:60,adaptability:75} },
+    { title:'Biologist / Life Scientist', category:'Science', riskScore:25, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI accelerates genomic analysis and drug target discovery, but experimental design, organism-level observation, and biological intuition remain distinctly human.',
+      tasksAutomated:['Genomic data analysis','Literature synthesis','Cell image classification','Protein structure prediction (basic)'],
+      tasksEnhanced:['Experimental hypothesis generation','Fieldwork & observation','Multi-omics integration','Cross-disciplinary research'],
+      skillsToLearn:['Bioinformatics & computational biology','AI drug discovery tools','CRISPR & synthetic biology','Single-cell sequencing'],
+      radar:{automation:25,augmentation:88,growth:78,wageStability:78,adaptability:78} },
+    { title:'Chemist', category:'Science', riskScore:30, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI designs novel molecules and predicts reaction outcomes faster than human trial-and-error, but synthesis, experimental validation, and safety judgment remain human.',
+      tasksAutomated:['Molecular property prediction','Reaction pathway modeling','Literature review','Analytical data processing'],
+      tasksEnhanced:['Novel compound synthesis','Materials discovery','Experimental design','Spectroscopic interpretation'],
+      skillsToLearn:['AI molecular design (generative chemistry)','Green chemistry methods','High-throughput experimentation','Quantum chemistry computing'],
+      radar:{automation:30,augmentation:88,growth:68,wageStability:75,adaptability:75} },
+    { title:'Climate Scientist', category:'Science', riskScore:18, netImpact:'positive', timeline:'7–15 years',
+      headline:'AI dramatically improves climate model resolution and analysis speed. Climate scientists who translate findings into policy recommendations and communicate uncertainty are critically needed.',
+      tasksAutomated:['Climate model runs','Data quality control','Standard report sections','Sensor data analysis'],
+      tasksEnhanced:['Novel climate research','Policy translation','Public communication','Interdisciplinary collaboration'],
+      skillsToLearn:['AI climate modeling tools','Carbon accounting systems','Climate risk communication','Nature-based solutions science'],
+      radar:{automation:18,augmentation:90,growth:85,wageStability:82,adaptability:82} },
+    // TRADES & EMERGENCY SERVICES
+    { title:'Commercial Airline Pilot', category:'Trades', riskScore:30, netImpact:'mixed', timeline:'10–20 years',
+      headline:'Highly automated cockpits already exist, but regulatory requirements, passenger psychology, and emergency judgment keep human pilots in command for the foreseeable future.',
+      tasksAutomated:['Routine cruise autopilot','Weather routing optimization','Pre-flight checklists','Navigation data entry'],
+      tasksEnhanced:['Emergency decision-making','Complex weather ops','System failure management','Crew leadership'],
+      skillsToLearn:['Advanced automation management','Unmanned systems certification (future)','Human factors expertise','Sustainable aviation fuels knowledge'],
+      radar:{automation:30,augmentation:60,growth:55,wageStability:80,adaptability:60} },
+    { title:'Firefighter', category:'Trades', riskScore:10, netImpact:'positive', timeline:'15+ years',
+      headline:'Physical rescue, real-time hazard assessment, and community emergency response are among the most human activities imaginable. AI improves dispatch and situational awareness.',
+      tasksAutomated:['Dispatch routing','Fire spread modeling','Incident documentation','Equipment inventory'],
+      tasksEnhanced:['Active firefighting','Search & rescue','Hazmat response','Community fire prevention'],
+      skillsToLearn:['AI dispatch & prediction tools','Technical rescue specialization','Drone-assisted reconnaissance','Emergency medical response'],
+      radar:{automation:10,augmentation:48,growth:65,wageStability:70,adaptability:68} },
+    { title:'Police Officer / Detective', category:'Government', riskScore:22, netImpact:'mixed', timeline:'8–15 years',
+      headline:'AI improves predictive policing tools and evidence analysis, but community trust, discretionary judgment, and constitutional accountability require human officers.',
+      tasksAutomated:['CCTV analysis','Patrol route optimization','Report drafting','Records search','Evidence tagging'],
+      tasksEnhanced:['Complex investigation','Community engagement','Use-of-force judgment','Crisis negotiation'],
+      skillsToLearn:['AI evidence analysis tools','De-escalation techniques','Digital forensics','Crisis intervention training (CIT)'],
+      radar:{automation:22,augmentation:55,growth:55,wageStability:65,adaptability:62} },
+    { title:'Security Guard', category:'Operations', riskScore:55, netImpact:'negative', timeline:'3–8 years',
+      headline:'AI surveillance systems, facial recognition, and autonomous patrol robots are automating much of routine physical security. Complex response, public relations, and access control management remain.',
+      tasksAutomated:['CCTV monitoring','Access log review','Patrol route execution','Incident logging'],
+      tasksEnhanced:['Incident response','VIP protection','Emergency coordination','Customer-facing security'],
+      skillsToLearn:['AI security systems operation','Cybersecurity basics','Emergency first response','Executive protection certification'],
+      radar:{automation:55,augmentation:38,growth:30,wageStability:35,adaptability:52} },
+    { title:'Delivery Driver', category:'Trades', riskScore:62, netImpact:'negative', timeline:'5–10 years',
+      headline:'Last-mile autonomous delivery is advancing via drones and sidewalk robots, but complex addresses, customer interaction, and multi-stop urban routes require humans for years.',
+      tasksAutomated:['Route optimization','Standard residential delivery','Tracking updates','Vehicle diagnostics'],
+      tasksEnhanced:['Complex commercial delivery','Fragile/specialty handling','Customer-facing resolution','Same-day premium logistics'],
+      skillsToLearn:['EV fleet operation','Logistics technology platforms','Delivery drone coordination','Cold chain management'],
+      radar:{automation:62,augmentation:35,growth:28,wageStability:35,adaptability:52} },
+    { title:'Landscaper / Groundskeeper', category:'Trades', riskScore:25, netImpact:'positive', timeline:'8–15 years',
+      headline:'Robotic lawnmowers handle routine turf maintenance, but landscape design, plant selection, and complex installation work require skilled human judgment and physical presence.',
+      tasksAutomated:['Routine lawn mowing (robotic)','Irrigation scheduling','Pest detection (drones)','Job quoting'],
+      tasksEnhanced:['Landscape design','Complex hardscaping','Tree surgery & arboriculture','Native plant restoration'],
+      skillsToLearn:['Robotic equipment operation & maintenance','Sustainable landscape design','Irrigation tech','Urban forestry'],
+      radar:{automation:25,augmentation:42,growth:65,wageStability:58,adaptability:70} },
+    // HOSPITALITY
+    { title:'Hotel Manager', category:'Hospitality', riskScore:35, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI optimizes pricing, housekeeping routes, and guest preferences, but creating memorable hospitality experiences and leading service teams remain distinctly human.',
+      tasksAutomated:['Dynamic pricing','Room assignment optimization','Maintenance scheduling','Guest preference analysis'],
+      tasksEnhanced:['Guest experience design','Team leadership','Crisis management','Luxury service culture'],
+      skillsToLearn:['Revenue management AI','Guest experience technology','Sustainable hotel operations','F&B innovation'],
+      radar:{automation:35,augmentation:72,growth:62,wageStability:65,adaptability:75} },
+    { title:'Bartender', category:'Hospitality', riskScore:22, netImpact:'positive', timeline:'10+ years',
+      headline:'Robotic cocktail machines exist, but the social ritual, emotional intelligence, and atmosphere creation of a skilled bartender remain deeply human and valued.',
+      tasksAutomated:['Inventory tracking','Recipe lookup','Standard drink orders (robotic, limited venues)'],
+      tasksEnhanced:['Craft cocktail creation','Guest experience','Reading the room','Upselling & hospitality'],
+      skillsToLearn:['Craft spirits & mixology certification','Specialty coffee & mocktails','Entertainment/flair','Bar management'],
+      radar:{automation:22,augmentation:35,growth:60,wageStability:52,adaptability:75} },
+    { title:'Waiter / Server', category:'Hospitality', riskScore:38, netImpact:'mixed', timeline:'5–12 years',
+      headline:'Tablet ordering and food robots handle routine service in casual dining, but fine dining, hospitality-as-theatre, and emotionally resonant service remain human.',
+      tasksAutomated:['Order taking (tablet/kiosk)','Bill processing','Basic food delivery (robots in some venues)'],
+      tasksEnhanced:['Fine dining service','Menu storytelling','Wine pairing guidance','Memorable hospitality'],
+      skillsToLearn:['Wine & sommelier certification','Fine dining service standards','Upselling techniques','Hospitality management'],
+      radar:{automation:38,augmentation:38,growth:50,wageStability:42,adaptability:70} },
+    { title:'Flight Attendant', category:'Hospitality', riskScore:18, netImpact:'positive', timeline:'10+ years',
+      headline:'Safety management, emergency response, and human comfort at altitude remain irreplaceable. AI assists scheduling and passenger management but cannot handle in-flight crises.',
+      tasksAutomated:['Passenger pre-boarding data','Service preference personalization','Schedule optimization','Language translation assistance'],
+      tasksEnhanced:['In-flight safety management','Emergency evacuation','Passenger wellbeing','Special needs assistance'],
+      skillsToLearn:['Advanced first aid & AED','Conflict de-escalation','Premium cabin service','Language skills'],
+      radar:{automation:18,augmentation:45,growth:55,wageStability:58,adaptability:72} },
+    { title:'Tour Guide', category:'Hospitality', riskScore:35, netImpact:'mixed', timeline:'5–10 years',
+      headline:'AI audio guides and AR apps handle standard information delivery, but curated storytelling, local knowledge, safety leadership, and authentic cultural connection remain human.',
+      tasksAutomated:['Standard factual narration','Translation','Booking coordination','Route planning'],
+      tasksEnhanced:['Immersive storytelling','Cultural insight','Group dynamics management','Off-the-beaten-path discovery'],
+      skillsToLearn:['AR/VR tour supplementation','Multilingual skills','Specialized heritage expertise','Accessible tourism'],
+      radar:{automation:35,augmentation:55,growth:50,wageStability:45,adaptability:72} },
+    // RETAIL
+    { title:'Retail Store Manager', category:'Retail', riskScore:42, netImpact:'mixed', timeline:'4–8 years',
+      headline:'AI optimizes inventory, scheduling, and customer analytics. Store managers who build team culture, solve in-store experience problems, and drive local community engagement are well-positioned.',
+      tasksAutomated:['Inventory management','Staff scheduling optimization','Sales analytics reporting','Customer behavior analysis'],
+      tasksEnhanced:['Team leadership & culture','Visual merchandising','Community engagement','Loss prevention strategy'],
+      skillsToLearn:['Retail AI analytics platforms','Omnichannel strategy','Experiential retail design','People management'],
+      radar:{automation:42,augmentation:68,growth:42,wageStability:52,adaptability:70} },
+    { title:'Buyer / Merchandiser', category:'Retail', riskScore:52, netImpact:'mixed', timeline:'3–7 years',
+      headline:'AI predicts trends and optimizes assortments at scale, but taste, supplier relationships, and cultural relevance in buying decisions retain human value — especially in fashion.',
+      tasksAutomated:['Trend data analysis','Inventory forecasting','Reorder automation','Supplier price comparison'],
+      tasksEnhanced:['Product curation & taste','Supplier relationship management','Brand collaboration','Cultural trend interpretation'],
+      skillsToLearn:['AI demand forecasting tools','Sustainable sourcing','Direct-to-consumer strategy','Trend forecasting platforms'],
+      radar:{automation:52,augmentation:68,growth:45,wageStability:55,adaptability:68} },
+    { title:'Cashier', category:'Retail', riskScore:88, netImpact:'negative', timeline:'1–4 years',
+      headline:'Self-checkout, computer vision checkout (Amazon Go), and automated kiosks are rapidly replacing cashier roles. Customer service and complex transaction handling provide limited protection.',
+      tasksAutomated:['Item scanning & pricing','Payment processing','Receipt generation','Standard returns'],
+      tasksEnhanced:['Complex customer service','Fraud recognition','Assisted sales','Accessibility support'],
+      skillsToLearn:['Customer service skills','Retail management progression','Inventory & stocking skills','E-commerce operations'],
+      radar:{automation:88,augmentation:28,growth:10,wageStability:18,adaptability:52} },
+    { title:'E-commerce Specialist', category:'Retail', riskScore:45, netImpact:'mixed', timeline:'3–6 years',
+      headline:'AI automates product listing optimization and ad bidding, but creative merchandising strategy, brand voice, and marketplace relationship management remain human-led.',
+      tasksAutomated:['Product description generation','SEO keyword optimization','Ad bid management','Pricing automation'],
+      tasksEnhanced:['Brand storytelling on platform','Marketplace strategy','Conversion rate optimization','New channel expansion'],
+      skillsToLearn:['AI-driven marketplace tools (Helium10, Jungle Scout)','Performance marketing','Cross-border e-commerce','Subscription model design'],
+      radar:{automation:45,augmentation:72,growth:65,wageStability:60,adaptability:78} },
+    // MEDIA / ENTERTAINMENT
+    { title:'Film / TV Director', category:'Creative', riskScore:15, netImpact:'positive', timeline:'10+ years',
+      headline:'The director\'s creative vision, ability to elicit performance, and storytelling instinct sit at the core of what makes a film resonant — irreducibly human.',
+      tasksAutomated:['Shot list generation assistance','Script breakdown','Location scouting data','Post-production scheduling'],
+      tasksEnhanced:['Storytelling vision','Actor performance direction','Visual language design','Audience emotional impact'],
+      skillsToLearn:['AI pre-visualization tools','Virtual production (LED volume)','AI color grading workflows','Independent financing models'],
+      radar:{automation:15,augmentation:72,growth:48,wageStability:55,adaptability:68} },
+    { title:'Screenwriter', category:'Creative', riskScore:55, netImpact:'mixed', timeline:'3–7 years',
+      headline:'AI can generate plot outlines and dialogue, but original voice, emotional depth, and the cultural insight that makes stories resonate with audiences remain scarce human gifts.',
+      tasksAutomated:['Logline generation','Scene outline drafts','Character bio sheets','Coverage summaries'],
+      tasksEnhanced:['Original voice & theme','Complex character arcs','Dialogue with emotional texture','Cultural specificity'],
+      skillsToLearn:['AI script development tools (for ideation)','Story structure mastery','IP development','Showrunning skills'],
+      radar:{automation:55,augmentation:62,growth:38,wageStability:42,adaptability:68} },
+    { title:'Actor / Performer', category:'Creative', riskScore:28, netImpact:'mixed', timeline:'5–10 years',
+      headline:'AI digital doubles and synthetic voices are disrupting background work and voice acting. Headline live performance, theatrical work, and authentic dramatic acting remain protected.',
+      tasksAutomated:['Background/extra appearances','Standard voice-over narration','ADR in licensed digital doubles','Social media content'],
+      tasksEnhanced:['Lead dramatic performance','Live theatre','Character development depth','Motion capture performance'],
+      skillsToLearn:['Motion capture technique','AI likeness rights negotiation','Multi-media performance','Physical theatre training'],
+      radar:{automation:28,augmentation:48,growth:45,wageStability:40,adaptability:70} },
+    // GOVERNMENT / INTELLIGENCE
+    { title:'Intelligence Analyst', category:'Government', riskScore:32, netImpact:'positive', timeline:'5–10 years',
+      headline:'AI processes and correlates vast intelligence datasets, but human judgment on source reliability, geopolitical context, and strategic implication remains essential and irreplaceable.',
+      tasksAutomated:['Open-source intelligence gathering','Signal pattern detection','Report templating','Translation'],
+      tasksEnhanced:['Source assessment & HUMINT','Strategic intelligence synthesis','Briefing senior leadership','Deception detection'],
+      skillsToLearn:['AI intelligence tools','Geopolitical analysis frameworks','Disinformation analysis','Language specialization'],
+      radar:{automation:32,augmentation:80,growth:65,wageStability:78,adaptability:68} },
+    { title:'Immigration Officer', category:'Government', riskScore:35, netImpact:'mixed', timeline:'5–10 years',
+      headline:'AI screens documents and flags anomalies, but discretionary interviews, complex case adjudication, and constitutional rights determinations require human judgment and accountability.',
+      tasksAutomated:['Document verification','Biometric processing','Database cross-referencing','Standard application review'],
+      tasksEnhanced:['Complex asylum adjudication','Fraud investigation','Interview judgment','Policy interpretation'],
+      skillsToLearn:['AI document analysis tools','Immigration law expertise','Cultural competency','Investigative interviewing'],
+      radar:{automation:35,augmentation:55,growth:48,wageStability:62,adaptability:60} },
+    { title:'Probation / Parole Officer', category:'Government', riskScore:28, netImpact:'mixed', timeline:'7–15 years',
+      headline:'AI risk assessment tools assist supervision decisions, but human connection, rehabilitation coaching, and accountability relationships are the core of effective reentry work.',
+      tasksAutomated:['Risk score calculation','Check-in scheduling','Compliance monitoring','Report generation'],
+      tasksEnhanced:['Rehabilitation coaching','Crisis intervention','Victim advocacy','Community reintegration support'],
+      skillsToLearn:['Motivational interviewing','Trauma-informed supervision','Cognitive behavioral techniques','Reentry resources navigation'],
+      radar:{automation:28,augmentation:55,growth:55,wageStability:62,adaptability:70} },
+  ];
+
+  const SUGGESTIONS = ['Software Engineer','Nurse','Cashier','Surgeon','Machine Learning Engineer','Lawyer','Firefighter','Screenwriter','Truck Driver','Accountant','Teacher (K-12)','Robotics Engineer','Climate Scientist','Bartender'];
+
+  // Build suggestion chips
+  const chipsEl = document.getElementById('jobChips');
+  SUGGESTIONS.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = 'job-chip';
+    btn.textContent = s;
+    btn.addEventListener('click', () => { document.getElementById('jobInput').value = s; runSearch(s); });
+    chipsEl.appendChild(btn);
+  });
+
+  function findJob(q) {
+    const ql = q.trim().toLowerCase();
+    if (!ql) return null;
+    return JOBS.find(j => j.title.toLowerCase() === ql)
+      || JOBS.find(j => j.title.toLowerCase().startsWith(ql))
+      || JOBS.find(j => j.title.toLowerCase().includes(ql))
+      || JOBS.find(j => ql.split(' ').every(w => j.title.toLowerCase().includes(w)));
+  }
+
+  function getMatches(q) {
+    const ql = q.trim().toLowerCase();
+    if (!ql) return [];
+    return JOBS.filter(j => j.title.toLowerCase().includes(ql) || j.category.toLowerCase().includes(ql)).slice(0, 7);
+  }
+
+  const input = document.getElementById('jobInput');
+  const dropdown = document.getElementById('searchDropdown');
+
+  input.addEventListener('input', () => {
+    const matches = getMatches(input.value);
+    if (matches.length && input.value.trim()) {
+      dropdown.innerHTML = matches.map(j =>
+        `<div class="dropdown-item" data-title="${j.title}"><span>${j.title}</span><span class="cat-tag">${j.category}</span></div>`
+      ).join('');
+      dropdown.style.display = 'block';
+    } else {
+      dropdown.style.display = 'none';
+    }
+  });
+
+  dropdown.addEventListener('click', e => {
+    const item = e.target.closest('.dropdown-item');
+    if (!item) return;
+    input.value = item.dataset.title;
+    dropdown.style.display = 'none';
+    runSearch(item.dataset.title);
+  });
+
+  document.addEventListener('click', e => {
+    if (!document.getElementById('searchWrap').contains(e.target)) dropdown.style.display = 'none';
+  });
+
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') { dropdown.style.display = 'none'; runSearch(input.value); } });
+  document.getElementById('searchBtn').addEventListener('click', () => { dropdown.style.display = 'none'; runSearch(input.value); });
+
+  function riskColor(s) { return s >= 70 ? '#E63946' : s >= 45 ? '#FFB703' : '#2DC653'; }
+  function riskLabel(s) { return s >= 70 ? 'High Exposure' : s >= 45 ? 'Moderate Exposure' : 'Low Exposure'; }
+
+  function runSearch(query) {
+    const job = findJob(query);
+    const el = document.getElementById('jobResult');
+
+    if (!job) {
+      el.style.display = 'block';
+      el.innerHTML = `<div class="no-result">
+        <div style="font-size:40px;margin-bottom:12px;">🔍</div>
+        <p>No data found for "<strong style="color:var(--text)">${query}</strong>"</p>
+        <p style="font-size:13px;margin-top:8px;color:var(--text-dim)">Try: ${SUGGESTIONS.slice(0,4).join(' · ')}</p>
+      </div>`;
+      el.scrollIntoView({ behavior:'smooth', block:'nearest' });
+      return;
+    }
+
+    const rc = riskColor(job.riskScore);
+    const impactClass = { positive:'badge-positive', negative:'badge-negative', mixed:'badge-mixed' }[job.netImpact];
+    const impactLabel = { positive:'Net Positive', negative:'Net Negative', mixed:'Mixed Outlook' }[job.netImpact];
+
+    el.style.display = 'block';
+    el.innerHTML = `
+      <div class="result-header">
+        <div class="result-title-block">
+          <h3>${job.title}</h3>
+          <div class="meta">
+            <span class="badge badge-cat">${job.category}</span>
+            <span class="badge ${impactClass}">${impactLabel}</span>
+          </div>
+          <p class="result-headline">${job.headline}</p>
+        </div>
+        <div class="risk-meter-wrap">
+          <div class="risk-meter-label">AI Exposure Score</div>
+          <div class="risk-meter-value" style="color:${rc}">${job.riskScore}<span style="font-size:20px;font-weight:400;">%</span></div>
+          <div class="risk-meter-label" style="margin-top:2px;">${riskLabel(job.riskScore)}</div>
+          <div class="risk-bar-track"><div class="risk-bar-fill" id="riskFill" style="background:${rc};"></div></div>
+        </div>
+      </div>
+      <div class="result-body">
+        <div class="result-radar">
+          <canvas id="radarCanvas" width="220" height="220"></canvas>
+          <p>5-Dimension AI Impact Profile</p>
+        </div>
+        <div class="result-lists">
+          <div class="result-list auto">
+            <h4>Tasks at Risk</h4>
+            <ul>${job.tasksAutomated.map(t=>`<li>${t}</li>`).join('')}</ul>
+          </div>
+          <div class="result-list aug">
+            <h4>Tasks Enhanced</h4>
+            <ul>${job.tasksEnhanced.map(t=>`<li>${t}</li>`).join('')}</ul>
+          </div>
+          <div class="result-list skill">
+            <h4>Skills to Develop</h4>
+            <ul>${job.skillsToLearn.map(t=>`<li>${t}</li>`).join('')}</ul>
+          </div>
+        </div>
+      </div>
+      <div class="result-footer">
+        <span>⏱ <strong>Transition Timeline:</strong> ${job.timeline}</span>
+        <span>📖 <strong>Sources:</strong> WEF Future of Jobs 2025 · IMF WP 2025/068 · OECD AI Papers No. 13</span>
+      </div>
+      <div class="year-slider-wrap">
+        <div class="year-slider-header">
+          <span>Timeline Explorer</span>
+          <strong id="sliderYearLabel">2025</strong>
+        </div>
+        <input type="range" class="year-range" id="yearSlider" min="2025" max="2035" value="2025" step="1">
+        <div class="year-phases" id="yearPhases">
+          ${(function(){
+            const r = job.riskScore;
+            const phases = [
+              { years:'2025–2026', title:'Augmentation Begins',  desc: r>=70 ? 'AI tools start automating repetitive tasks. Early disruption visible in entry-level roles.' : r>=45 ? 'AI assistants adopted. Some task shifts begin; role largely stable.' : 'AI tools adopted as productivity aids. Demand for this role may grow.' },
+              { years:'2027–2028', title:'Role Restructuring',   desc: r>=70 ? 'Significant task displacement. Hybrid roles emerge; headcount often reduced.' : r>=45 ? 'Reskilling accelerates. New AI-complementary responsibilities added.' : 'Output quality rises with AI. Premium talent increasingly valued.' },
+              { years:'2029–2031', title:'Major Transition',     desc: r>=70 ? 'Profession radically transformed. Workers who adapted command a premium.' : r>=45 ? 'New role definition solidifies. Complementary skills attract wage gains.' : 'AI-augmented practitioners dominate. Role expands into adjacent areas.' },
+              { years:'2032–2035', title:'New Equilibrium',      desc: r>=70 ? 'Smaller, highly specialized workforce remains. Strong re-skilling is essential.' : r>=45 ? 'Hybrid human-AI model stabilizes. Adaptability determines outcomes.' : 'AI mastery is core competency. Strong wage premium for this role.' },
+            ];
+            return phases.map((p,i)=>`<div class="year-phase${i===0?' active':''}" data-phase="${i}"><div class="year-phase-years">${p.years}</div><div class="year-phase-title">${p.title}</div><div class="year-phase-desc">${p.desc}</div></div>`).join('');
+          })()}
+        </div>
+      </div>`;
+
+    // Animate risk bar
+    requestAnimationFrame(() => {
+      const fill = document.getElementById('riskFill');
+      if (fill) setTimeout(() => fill.style.width = job.riskScore + '%', 50);
+    });
+
+    // Destroy old radar
+    if (radarChart) { radarChart.destroy(); radarChart = null; }
+
+    radarChart = new Chart(document.getElementById('radarCanvas'), {
+      type: 'radar',
+      data: {
+        labels: ['Automation\nRisk', 'Augmentation\nValue', 'Job Growth', 'Wage\nStability', 'Reskilling\nEase'],
+        datasets: [{
+          data: [job.radar.automation, job.radar.augmentation, job.radar.growth, job.radar.wageStability, job.radar.adaptability],
+          borderColor: TEAL,
+          backgroundColor: 'rgba(0,180,216,0.15)',
+          pointBackgroundColor: TEAL,
+          pointBorderColor: NAVY,
+          pointBorderWidth: 2,
+          borderWidth: 2.5,
+          pointRadius: 4,
+        }]
+      },
+      options: {
+        responsive: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          r: {
+            min: 0, max: 100,
+            grid: { color: 'rgba(255,255,255,0.08)' },
+            angleLines: { color: 'rgba(255,255,255,0.08)' },
+            pointLabels: { font: { size: 10 }, color: '#8BAAB8' },
+            ticks: { display: false, stepSize: 25 }
+          }
+        },
+        animation: { duration: 700 }
+      }
+    });
+
+    // Year slider
+    const slider = document.getElementById('yearSlider');
+    const yearLabel = document.getElementById('sliderYearLabel');
+    const phaseDivs = document.querySelectorAll('.year-phase');
+    if (slider) {
+      function updateSlider() {
+        const yr = parseInt(slider.value);
+        yearLabel.textContent = yr;
+        const idx = yr <= 2026 ? 0 : yr <= 2028 ? 1 : yr <= 2031 ? 2 : 3;
+        phaseDivs.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+      slider.addEventListener('input', updateSlider);
+    }
+
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+})();
+
+// ══════════════════════════════
+//  COOLNESS PACK
+// ══════════════════════════════
+(function() {
+  // ── 1. Reveal animations ──
+  const revealEls = document.querySelectorAll(
+    '.stat-card, .chart-container, .chart-callout, .risk-card, .takeaway-card, .source-card'
+  );
+  revealEls.forEach(function(el, i) {
+    el.classList.add('reveal');
+    el.style.transitionDelay = (i % 5) * 0.08 + 's';
+  });
+  const revealObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('revealed'); });
+  }, { threshold: 0.1 });
+  revealEls.forEach(function(el) { revealObs.observe(el); });
+
+  // ── 3. Typewriter on hero title ──
+  var heroTitle = document.getElementById('heroTitle');
+  if (heroTitle) {
+    var fullText = heroTitle.textContent.trim();
+    heroTitle.style.animation = 'none';
+    heroTitle.style.opacity = '0';
+    heroTitle.innerHTML = '';
+    var cursor = document.createElement('span');
+    cursor.className = 'tw-cursor';
+    heroTitle.appendChild(cursor);
+    var twIdx = 0;
+    function typeChar() {
+      if (twIdx === 0) {
+        heroTitle.style.transition = 'opacity 0.25s ease';
+        heroTitle.style.opacity = '1';
+      }
+      if (twIdx < fullText.length) {
+        heroTitle.insertBefore(document.createTextNode(fullText[twIdx]), cursor);
+        twIdx++;
+        setTimeout(typeChar, 32 + Math.random() * 22);
+      } else {
+        setTimeout(function() { cursor.style.opacity = '0'; }, 1800);
+      }
+    }
+    setTimeout(typeChar, 900);
+  }
+
+  // ── 4. Navigation dots ──
+  var SECTIONS = ['hero','stats','adoption','displacement','risk','takeaways','job-search','sources'];
+  var dots = document.querySelectorAll('.nav-dot');
+  dots.forEach(function(dot) {
+    dot.addEventListener('click', function() {
+      var sec = document.getElementById(dot.dataset.section);
+      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+  var dotObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting && e.intersectionRatio >= 0.45) {
+        dots.forEach(function(d) { d.classList.remove('active'); });
+        var active = document.querySelector('.nav-dot[data-section="' + e.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.45 });
+  SECTIONS.forEach(function(id) { var el = document.getElementById(id); if (el) dotObs.observe(el); });
+
+  // ── 5. Keyboard navigation ──
+  var currentSec = 0;
+  var navObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting && e.intersectionRatio >= 0.45) currentSec = SECTIONS.indexOf(e.target.id);
+    });
+  }, { threshold: 0.45 });
+  SECTIONS.forEach(function(id) { var el = document.getElementById(id); if (el) navObs.observe(el); });
+  document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+      e.preventDefault();
+      currentSec = Math.min(currentSec + 1, SECTIONS.length - 1);
+      document.getElementById(SECTIONS[currentSec]).scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+      e.preventDefault();
+      currentSec = Math.max(currentSec - 1, 0);
+      document.getElementById(SECTIONS[currentSec]).scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+  // ── 6. Countdown timer ──
+  var totalSec = 300, timerIv = null, timerRunning = false;
+  var timerDisp = document.getElementById('timerDisplay');
+  var startBtn  = document.getElementById('timerStart');
+  var resetBtn  = document.getElementById('timerReset');
+  function updateTimer() {
+    var m = Math.floor(totalSec / 60), s = totalSec % 60;
+    timerDisp.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    timerDisp.className = totalSec <= 60 ? 'urgent' : totalSec <= 120 ? 'warn' : '';
+  }
+  startBtn.addEventListener('click', function() {
+    if (timerRunning) {
+      clearInterval(timerIv); timerRunning = false; startBtn.innerHTML = '&#9654;';
+    } else {
+      if (totalSec <= 0) return;
+      timerRunning = true; startBtn.innerHTML = '&#9646;&#9646;';
+      timerIv = setInterval(function() {
+        totalSec--;
+        updateTimer();
+        if (totalSec <= 0) { clearInterval(timerIv); timerRunning = false; startBtn.innerHTML = '&#9654;'; }
+      }, 1000);
+    }
+  });
+  resetBtn.addEventListener('click', function() {
+    clearInterval(timerIv); timerRunning = false; totalSec = 300;
+    startBtn.innerHTML = '&#9654;'; updateTimer();
+  });
+
+  // ── 7. Circuit board background (full-page, fixed) ──
+  var pCanvas = document.getElementById('bgCanvas');
+  if (pCanvas) {
+    var pc = pCanvas.getContext('2d');
+    var cNodes = [], cTraces = [], cPulses = [];
+    var G = 72; // grid spacing
+
+    function radialGlow(x, y, r, col) {
+      var g = pc.createRadialGradient(x, y, 0, x, y, r);
+      g.addColorStop(0,   'rgba(' + col + ',0.9)');
+      g.addColorStop(0.4, 'rgba(' + col + ',0.3)');
+      g.addColorStop(1,   'rgba(' + col + ',0)');
+      pc.beginPath(); pc.arc(x, y, r, 0, Math.PI*2);
+      pc.fillStyle = g; pc.fill();
+    }
+
+    function initCircuit() {
+      var W = pCanvas.width, H = pCanvas.height;
+      cNodes = []; cTraces = []; cPulses = [];
+      var map = {};
+      var cols = Math.ceil(W / G) + 2;
+      var rows = Math.ceil(H / G) + 2;
+
+      // Build node grid (sparse)
+      for (var r = 0; r <= rows; r++) {
+        for (var c = 0; c <= cols; c++) {
+          if (Math.random() < 0.62) {
+            var nd = { x: c * G, y: r * G, act: 0, gold: Math.random() < 0.14 };
+            cNodes.push(nd);
+            map[r + '_' + c] = nd;
+          }
+        }
+      }
+
+      // Connect adjacent nodes to form traces
+      for (var r = 0; r <= rows; r++) {
+        for (var c = 0; c <= cols; c++) {
+          var n = map[r + '_' + c];
+          if (!n) continue;
+          // Right
+          var nr = map[r + '_' + (c + 1)];
+          if (nr && Math.random() < 0.52) cTraces.push({ a: n, b: nr, drawn: 0, gold: n.gold || nr.gold });
+          // Down
+          var nd2 = map[(r + 1) + '_' + c];
+          if (nd2 && Math.random() < 0.52) cTraces.push({ a: n, b: nd2, drawn: 0, gold: n.gold || nd2.gold });
+        }
+      }
+
+      // Stagger initial draw progress so it looks like it's already running
+      cTraces.forEach(function(t) { t.drawn = Math.random() * 0.6; });
+    }
+
+    function drawCircuit() {
+      var W = pCanvas.width, H = pCanvas.height;
+      pc.clearRect(0, 0, W, H);
+
+      // Dark background with subtle blue tint
+      pc.fillStyle = '#080f1c';
+      pc.fillRect(0, 0, W, H);
+
+      // Scan line sweep
+      var scanY = ((Date.now() / 6000) % 1) * (H + 200) - 100;
+      var sg = pc.createLinearGradient(0, scanY - 120, 0, scanY + 120);
+      sg.addColorStop(0,   'rgba(0,180,216,0)');
+      sg.addColorStop(0.45,'rgba(0,180,216,0.025)');
+      sg.addColorStop(0.5, 'rgba(0,180,216,0.06)');
+      sg.addColorStop(0.55,'rgba(0,180,216,0.025)');
+      sg.addColorStop(1,   'rgba(0,180,216,0)');
+      pc.fillStyle = sg;
+      pc.fillRect(0, scanY - 120, W, 240);
+
+      // Grow traces
+      cTraces.forEach(function(t) {
+        if (t.drawn < 1) t.drawn = Math.min(1, t.drawn + 0.004 + Math.random() * 0.003);
+        var ex = t.a.x + (t.b.x - t.a.x) * t.drawn;
+        var ey = t.a.y + (t.b.y - t.a.y) * t.drawn;
+        var col = t.gold ? '255,183,3' : '0,180,216';
+        pc.beginPath(); pc.moveTo(t.a.x, t.a.y); pc.lineTo(ex, ey);
+        pc.strokeStyle = 'rgba(' + col + ',0.18)';
+        pc.lineWidth = 1.2;
+        pc.stroke();
+
+        // Spawn pulses on complete traces
+        if (t.drawn >= 1 && Math.random() < 0.0018) {
+          var rev = Math.random() < 0.5;
+          cPulses.push({ a: rev ? t.b : t.a, b: rev ? t.a : t.b, t: 0, spd: 0.006 + Math.random() * 0.007, gold: t.gold });
+        }
+      });
+
+      // Pulses
+      cPulses = cPulses.filter(function(p) { return p.t < 1; });
+      cPulses.forEach(function(p) {
+        p.t += p.spd;
+        var x = p.a.x + (p.b.x - p.a.x) * p.t;
+        var y = p.a.y + (p.b.y - p.a.y) * p.t;
+        if (p.t > 0.9) p.b.act = Math.min(1, p.b.act + 0.6);
+        var col = p.gold ? '255,183,3' : '0,180,216';
+        radialGlow(x, y, 10, col);
+        pc.beginPath(); pc.arc(x, y, 2.2, 0, Math.PI * 2);
+        pc.fillStyle = p.gold ? '#FFB703' : '#00B4D8';
+        pc.fill();
+      });
+
+      // Nodes
+      cNodes.forEach(function(n) {
+        n.act = Math.max(0, n.act - 0.022);
+        if (Math.random() < 0.0004) n.act = 1;
+        var col = n.gold ? '255,183,3' : '0,180,216';
+        if (n.act > 0.05) radialGlow(n.x, n.y, 6 + n.act * 16, col);
+        // Outer ring
+        pc.beginPath(); pc.arc(n.x, n.y, 3.5, 0, Math.PI * 2);
+        pc.fillStyle = 'rgba(' + col + ',' + (0.15 + n.act * 0.5) + ')';
+        pc.fill();
+        // Inner dot
+        pc.beginPath(); pc.arc(n.x, n.y, 1.4, 0, Math.PI * 2);
+        pc.fillStyle = 'rgba(' + col + ',' + (0.4 + n.act * 0.6) + ')';
+        pc.fill();
+        // Bright core flash
+        if (n.act > 0.5) {
+          pc.beginPath(); pc.arc(n.x, n.y, 1, 0, Math.PI * 2);
+          pc.fillStyle = n.gold ? '#fffde0' : '#e0f7ff';
+          pc.fill();
+        }
+      });
+
+      requestAnimationFrame(drawCircuit);
+    }
+
+    function resizeP() {
+      pCanvas.width  = window.innerWidth;
+      pCanvas.height = window.innerHeight;
+      initCircuit();
+    }
+
+    window.addEventListener('resize', resizeP);
+    resizeP();
+    drawCircuit();
+  }
+
+  // ── 9. World map canvas ──
+  var mCanvas = document.getElementById('worldMapCanvas');
+  if (mCanvas) {
+    var mc = mCanvas.getContext('2d'), mAnim;
+    // Continent dot-cloud (normalized equirectangular 0-1)
+    var cDots = [];
+    function addDots(x0,y0,w,h,n) { for(var i=0;i<n;i++) cDots.push([x0+Math.random()*w, y0+Math.random()*h]); }
+    addDots(0.04,0.12,0.22,0.36,70);  // N.America
+    addDots(0.16,0.52,0.12,0.33,38);  // S.America
+    addDots(0.44,0.10,0.11,0.22,28);  // Europe
+    addDots(0.44,0.34,0.13,0.44,55);  // Africa
+    addDots(0.54,0.05,0.36,0.42,95);  // Asia
+    addDots(0.77,0.55,0.12,0.18,22);  // Australia
+    // Adoption nodes [x, y, val, label] — equirectangular positions
+    var nodes = [
+      [0.653, 0.367, 64, 'UAE'],
+      [0.789, 0.494, 61, 'Singapore'],
+      [0.228, 0.283, 28, 'USA'],
+      [0.528, 0.222, 25, 'Europe'],
+      [0.853, 0.294, 22, 'S. Korea'],
+      [0.556, 0.50,  14, 'Africa'],
+      [0.347, 0.556, 12, 'Lat. Am.'],
+    ];
+    function drawMap() {
+      var W = mCanvas.offsetWidth, H = 220;
+      mCanvas.width = W; mCanvas.height = H;
+      mc.clearRect(0,0,W,H);
+      // Grid
+      mc.strokeStyle = 'rgba(0,180,216,0.06)'; mc.lineWidth = 0.5;
+      for(var gx=0;gx<=10;gx++){mc.beginPath();mc.moveTo(gx/10*W,0);mc.lineTo(gx/10*W,H);mc.stroke();}
+      for(var gy=0;gy<=5;gy++){mc.beginPath();mc.moveTo(0,gy/5*H);mc.lineTo(W,gy/5*H);mc.stroke();}
+      // Continent dots
+      cDots.forEach(function(d){mc.beginPath();mc.arc(d[0]*W,d[1]*H,1.1,0,Math.PI*2);mc.fillStyle='rgba(0,180,216,0.14)';mc.fill();});
+      var t = Date.now()/1000;
+      // Arcs between nodes
+      for(var i=0;i<nodes.length;i++){for(var j=i+1;j<nodes.length;j++){
+        var a=nodes[i],b=nodes[j],phase=Math.sin(t*0.4+i*0.7+j*0.5)*0.5+0.5;
+        mc.beginPath();mc.moveTo(a[0]*W,a[1]*H);
+        mc.quadraticCurveTo((a[0]+b[0])/2*W,(a[1]+b[1])/2*H-25,b[0]*W,b[1]*H);
+        mc.strokeStyle='rgba(0,180,216,'+(0.03+0.05*phase)+')';mc.lineWidth=0.8;mc.stroke();
+      }}
+      // Nodes
+      nodes.forEach(function(n,i){
+        var x=n[0]*W,y=n[1]*H,val=n[2],pulse=Math.sin(t*1.3+i*0.9)*0.3+0.7;
+        var rad=val/64*18+5;
+        var col=val>50?'#00B4D8':val>20?'rgba(0,180,216,0.6)':'#E63946';
+        mc.beginPath();mc.arc(x,y,rad*(1+0.3*(1-pulse)),0,Math.PI*2);
+        mc.strokeStyle='rgba(0,180,216,'+(0.2*pulse)+')';mc.lineWidth=1;mc.stroke();
+        mc.beginPath();mc.arc(x,y,rad*0.55,0,Math.PI*2);
+        mc.fillStyle=col;mc.globalAlpha=0.75+0.2*pulse;mc.fill();mc.globalAlpha=1;
+        mc.fillStyle='rgba(232,241,242,0.8)';mc.font='bold 9px "Segoe UI",sans-serif';mc.textAlign='center';
+        mc.fillText(n[3],x,y+rad*0.55+12);
+        mc.fillStyle=col;mc.font='9px "Segoe UI",sans-serif';mc.fillText(val+'%',x,y+rad*0.55+22);
+      });
+      mAnim = requestAnimationFrame(drawMap);
+    }
+    var mObs = new IntersectionObserver(function(entries){
+      if(entries[0].isIntersecting){if(!mAnim)drawMap();}
+      else{if(mAnim){cancelAnimationFrame(mAnim);mAnim=null;}}
+    });
+    mObs.observe(mCanvas);
+  }
+
+})();
+</script>
+</body>
+</html>
